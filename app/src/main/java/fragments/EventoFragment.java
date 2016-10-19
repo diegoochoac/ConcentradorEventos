@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -88,13 +89,14 @@ public class EventoFragment extends Fragment implements OnClickListener {
     void AlerDialogListEvento(){
         final AlertDialog.Builder alertdialogbuilder = new AlertDialog.Builder(thiscontext);
 
-        LinearLayout layout= new LinearLayout(thiscontext);
-
+        final LinearLayout layout= new LinearLayout(thiscontext);
         final ListView listview = new ListView(thiscontext);
         final TextView Message = new TextView(thiscontext);
         final EditText editText = new EditText(thiscontext);
 
+
         Message.setText("Ingrese busqueda:");
+        Message.setGravity(Gravity.CENTER | Gravity.BOTTOM);
         editText.setSingleLine();
         editText.clearFocus();
 
@@ -231,6 +233,8 @@ public class EventoFragment extends Fragment implements OnClickListener {
                 btnSelecTipoEven.setEnabled(true);
                 crono.stop();
                 break;
+
+            
         }
     }
 

@@ -19,8 +19,14 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
+import basedatos.contratista.Contratista;
+import basedatos.contratista.Usuario;
 import basedatos.evento.Evento;
 import basedatos.evento.TipoEvento;
+import basedatos.terreno.Hacienda;
+import basedatos.terreno.Suerte;
+import basedatos.terreno.Variedad;
+import basedatos.terreno.Zona;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -29,13 +35,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     //Objeto Dao qye se utiliza para acceder a la tabla usuario
     //Contratista
-    //private Dao<Usuario,Integer> usuarioDao;
-    //private Dao<Contratista, Integer> contratistaDao;
+    private Dao<Usuario,Integer> usuarioDao;
+    private Dao<Contratista, Integer> contratistaDao;
     //Terreno
-    //private Dao<Hacienda, Integer> haciendaDao;
-    //private Dao<Suerte, Integer> suerteDao;
-    //private Dao<Variedad, Integer> variedadDao;
-    //private Dao<Zona, Integer> zonaDao;
+    private Dao<Hacienda, Integer> haciendaDao;
+    private Dao<Suerte, Integer> suerteDao;
+    private Dao<Variedad, Integer> variedadDao;
+    private Dao<Zona, Integer> zonaDao;
     //Evento
     private Dao<Evento, Integer> eventoDao;
     private Dao<TipoEvento, Integer> tipoeventoDao;
@@ -57,34 +63,15 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getSimpleName(), "onCreate()");
             //
-            //TableUtils.createTable(source,Usuario.class);
-            //TableUtils.createTable(source,Contratista.class);
-            //
-            //TableUtils.createTable(source,Hacienda.class);
-            //TableUtils.createTable(source,Suerte.class);
-            //TableUtils.createTable(source,Variedad.class);
-            //TableUtils.createTable(source,Zona.class);
-            //
+            TableUtils.createTable(source,Usuario.class);
+            TableUtils.createTable(source,Contratista.class);
+            TableUtils.createTable(source,Hacienda.class);
+            TableUtils.createTable(source,Suerte.class);
+            TableUtils.createTable(source,Variedad.class);
+            TableUtils.createTable(source,Zona.class);
             TableUtils.createTable(source,Evento.class);
             TableUtils.createTable(source,TipoEvento.class);
-
-            TipoEvento nuevo = new TipoEvento("Inspección diaria");
-            tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Desplazamiento a sitio de la labor");
-            tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Espera antes de ejecutar trabajos");
-            tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Alimentación");
-            tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Mantenimiento");
-            tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Varado");
-            tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Tanqueo");
-            tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Parado lluvia");
-            tipoeventoDao.create(nuevo);
-
+            registrosIniciales();
 
         }catch (SQLException ex) {
             Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear base de datos",ex);
@@ -105,13 +92,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getSimpleName(), "onUpgrade()");
             //
-            // TableUtils.dropTable(source,Usuario.class, true);
-            //TableUtils.dropTable(source,Contratista.class, true);
+            TableUtils.dropTable(source,Usuario.class, true);
+            TableUtils.dropTable(source,Contratista.class, true);
             //
-            //TableUtils.dropTable(source,Hacienda.class, true);
-            //TableUtils.dropTable(source,Suerte.class, true);
-            //TableUtils.dropTable(source,Variedad.class, true);
-            //TableUtils.dropTable(source,Zona.class, true);
+            TableUtils.dropTable(source,Hacienda.class, true);
+            TableUtils.dropTable(source,Suerte.class, true);
+            TableUtils.dropTable(source,Variedad.class, true);
+            TableUtils.dropTable(source,Zona.class, true);
             //
             TableUtils.dropTable(source,Evento.class, true);
             TableUtils.dropTable(source,TipoEvento.class, true);
@@ -126,7 +113,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     //<editor-fold desc="Metodos Get">
 
-  /*  public Dao<Usuario, Integer> getUsuarioDao()  throws SQLException {
+    public Dao<Usuario, Integer> getUsuarioDao()  throws SQLException {
         if(usuarioDao==null){
             usuarioDao = getDao(Usuario.class);
         }
@@ -166,7 +153,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             zonaDao = getDao(Zona.class);
         }
         return zonaDao;
-    }*/
+    }
 
     public Dao<Evento, Integer> getEventoDao() throws SQLException {
         if(eventoDao==null){
@@ -184,6 +171,29 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     //</editor-fold>
 
+    public void registrosIniciales(){
+        try {
+        TipoEvento nuevo = new TipoEvento("Inspección diaria");
+        tipoeventoDao.create(nuevo);
+        nuevo = new TipoEvento("Desplazamiento a sitio de la labor");
+        tipoeventoDao.create(nuevo);
+        nuevo = new TipoEvento("Espera antes de ejecutar trabajos");
+        tipoeventoDao.create(nuevo);
+        nuevo = new TipoEvento("Alimentación");
+        tipoeventoDao.create(nuevo);
+        nuevo = new TipoEvento("Mantenimiento");
+        tipoeventoDao.create(nuevo);
+        nuevo = new TipoEvento("Varado");
+        tipoeventoDao.create(nuevo);
+        nuevo = new TipoEvento("Tanqueo");
+        tipoeventoDao.create(nuevo);
+        nuevo = new TipoEvento("Parado lluvia");
+        tipoeventoDao.create(nuevo);
+        }catch (SQLException ex) {
+            Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear registrosIniciales",ex);
+            throw  new RuntimeException(ex);
+        }
+    }
 
 
 }

@@ -17,8 +17,14 @@ import com.j256.ormlite.stmt.Where;
 import java.sql.SQLException;
 import java.util.List;
 
+import basedatos.contratista.Contratista;
+import basedatos.contratista.Usuario;
 import basedatos.evento.Evento;
 import basedatos.evento.TipoEvento;
+import basedatos.terreno.Hacienda;
+import basedatos.terreno.Suerte;
+import basedatos.terreno.Variedad;
+import basedatos.terreno.Zona;
 
 /**
  * Created by diego on 8/09/16.
@@ -30,12 +36,12 @@ public class DatabaseCrud {
     private Dao<TipoEvento, Integer> tipoEventoDao;
     private Dao<Evento, Integer> eventoDao;
 
-//    private Dao<Usuario, Integer> usuarioDao;
-//    private Dao<Contratista,Integer> contratistaDao;
-//    private Dao<Hacienda, Integer> haciendaDao;
-//    private Dao<Suerte, Integer> suerteDao;
-//    private Dao<Variedad, Integer> variedadDao;
-//    private Dao<Zona, Integer> zonaDao;
+    private Dao<Usuario, Integer> usuarioDao;
+    private Dao<Contratista,Integer> contratistaDao;
+    private Dao<Hacienda, Integer> haciendaDao;
+    private Dao<Suerte, Integer> suerteDao;
+    private Dao<Variedad, Integer> variedadDao;
+    private Dao<Zona, Integer> zonaDao;
 
 
     Context thiscontext;
@@ -264,9 +270,7 @@ public class DatabaseCrud {
 
     //</editor-fold>
 
-
-    //<editor-fold desc="Description">
-   /* //<editor-fold desc="CRUD Usuario">
+    //<editor-fold desc="CRUD Usuario">
     public int crearUsuario(Usuario nuevo){
         try {
             Log.i("DatabaseCrud","crearUsuario Bien: "+nuevo.getNombre());
@@ -585,7 +589,7 @@ public class DatabaseCrud {
 
     //</editor-fold>
 
-    //<editor-fold desc="CRUD Terreno Hacienda">
+    //<editor-fold desc="CRUD Terreno Suerte">
     public int crearSuerte(Suerte nuevo){
         try {
             Log.i("DatabaseCrud","crearSuerte Bien: "+nuevo.getNombre());
@@ -761,7 +765,7 @@ public class DatabaseCrud {
             e.printStackTrace();
         }
         return null;
-    }*/
-    //</editor-fold>
+    }
+
 
 }
