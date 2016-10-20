@@ -19,7 +19,7 @@ public class Contratista {
     public Contratista() {
     }
 
-    public Contratista(String nombre) {
+    public Contratista(final String nombre) {
         this.nombre = nombre;
     }
 

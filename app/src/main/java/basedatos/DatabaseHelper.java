@@ -71,7 +71,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(source,Zona.class);
             TableUtils.createTable(source,Evento.class);
             TableUtils.createTable(source,TipoEvento.class);
-            registrosIniciales();
+            registrosInicialesEventos();
+            registrosInicialesContratistas();
 
         }catch (SQLException ex) {
             Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear base de datos",ex);
@@ -171,25 +172,41 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     //</editor-fold>
 
-    public void registrosIniciales(){
+    public void registrosInicialesEventos(){
         try {
-        TipoEvento nuevo = new TipoEvento("Inspección diaria");
-        tipoeventoDao.create(nuevo);
-        nuevo = new TipoEvento("Desplazamiento a sitio de la labor");
-        tipoeventoDao.create(nuevo);
-        nuevo = new TipoEvento("Espera antes de ejecutar trabajos");
-        tipoeventoDao.create(nuevo);
-        nuevo = new TipoEvento("Alimentación");
-        tipoeventoDao.create(nuevo);
-        nuevo = new TipoEvento("Mantenimiento");
-        tipoeventoDao.create(nuevo);
-        nuevo = new TipoEvento("Varado");
-        tipoeventoDao.create(nuevo);
-        nuevo = new TipoEvento("Tanqueo");
-        tipoeventoDao.create(nuevo);
-        nuevo = new TipoEvento("Parado lluvia");
-        tipoeventoDao.create(nuevo);
-        }catch (SQLException ex) {
+            TipoEvento nuevo = new TipoEvento("Inspección diaria");
+            tipoeventoDao.create(nuevo);
+            nuevo = new TipoEvento("Desplazamiento a sitio de la labor");
+            tipoeventoDao.create(nuevo);
+            nuevo = new TipoEvento("Espera antes de ejecutar trabajos");
+            tipoeventoDao.create(nuevo);
+            nuevo = new TipoEvento("Alimentación");
+            tipoeventoDao.create(nuevo);
+            nuevo = new TipoEvento("Mantenimiento");
+            tipoeventoDao.create(nuevo);
+            nuevo = new TipoEvento("Varado");
+            tipoeventoDao.create(nuevo);
+            nuevo = new TipoEvento("Tanqueo");
+            tipoeventoDao.create(nuevo);
+            nuevo = new TipoEvento("Parado lluvia");
+            tipoeventoDao.create(nuevo);
+
+        }
+        catch (SQLException ex) {
+            Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear registrosIniciales",ex);
+            throw  new RuntimeException(ex);
+        }
+    }
+    public void registrosInicialesContratistas(){
+        try {
+            Contratista nuevoCon = new Contratista("Ingenio Castilla");
+            contratistaDao.create(nuevoCon);
+            nuevoCon = new Contratista("Ingenio Manuelita");
+            contratistaDao.create(nuevoCon);
+            nuevoCon = new Contratista("Ingenio Incauca");
+            contratistaDao.create(nuevoCon);
+        }
+        catch (SQLException ex) {
             Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear registrosIniciales",ex);
             throw  new RuntimeException(ex);
         }

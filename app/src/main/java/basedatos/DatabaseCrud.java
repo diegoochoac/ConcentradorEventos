@@ -52,13 +52,12 @@ public class DatabaseCrud {
 
             tipoEventoDao = getHelper().getTipoeventoDao();
             eventoDao = getHelper().getEventoDao();
-
-//            usuarioDao = getHelper().getUsuarioDao();
-//            contratistaDao = getHelper().getContratistaDao();
-//            haciendaDao = getHelper().getHaciendaDao();
-//            suerteDao = getHelper().getSuerteDao();
-//            variedadDao = getHelper().getVariedadDao();
-//            zonaDao= getHelper().getZonaDao();
+            usuarioDao = getHelper().getUsuarioDao();
+            contratistaDao = getHelper().getContratistaDao();
+            haciendaDao = getHelper().getHaciendaDao();
+            suerteDao = getHelper().getSuerteDao();
+            variedadDao = getHelper().getVariedadDao();
+            zonaDao= getHelper().getZonaDao();
 
         } catch (SQLException e) {
             e.printStackTrace();
