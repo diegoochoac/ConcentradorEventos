@@ -9,6 +9,7 @@ public class Usuario {
 
     public static final String ID = "id";
     public static final String NOMBRE = "nombre";
+    public static final String KEY_CONTRATISTA = "contratista";
 
     @DatabaseField(generatedId = true, columnName = ID)
     private int id;
@@ -17,7 +18,7 @@ public class Usuario {
     private String nombre;
 
     // Foreign key defined to hold associations
-    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = KEY_CONTRATISTA, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     public Contratista contratista;
 
     public Usuario() {

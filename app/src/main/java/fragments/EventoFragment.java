@@ -29,11 +29,13 @@ import android.widget.Toast;
 import com.concentrador.agrum.concentradoreventos.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import basedatos.DatabaseCrud;
 import basedatos.contratista.Contratista;
 import basedatos.contratista.Usuario;
+import basedatos.evento.Evento;
 import basedatos.evento.TipoEvento;
 
 /**
@@ -68,6 +70,10 @@ public class EventoFragment extends Fragment implements OnClickListener {
     Context thiscontext;
     //private OnFragmentInteractionListener mListener;
 
+    String tiempoInicio;
+    String tiempoFin;
+    String fecha;
+
     public EventoFragment() {
     }
 
@@ -85,9 +91,12 @@ public class EventoFragment extends Fragment implements OnClickListener {
     private void inicializarComponentes(final View view) {
         btnSelecTipoEven= (Button)view.findViewById(R.id.btnSeleEvento);
         btnSelecTipoEven.setOnClickListener(this);
+        btnSelecTipoEven.setEnabled(false);
+
         btnIniciarEvento = (Button)view.findViewById(R.id.btnInicarEvento);
         btnIniciarEvento.setOnClickListener(this);
         btnIniciarEvento.setEnabled(false);
+
         btnDetenerEvento = (Button)view.findViewById(R.id.btnDetenerEvento);
         btnDetenerEvento.setOnClickListener(this);
         btnDetenerEvento.setEnabled(false);
@@ -98,15 +107,15 @@ public class EventoFragment extends Fragment implements OnClickListener {
 
         btnUsuario = (Button)view.findViewById(R.id.btnTrabajador);
         btnUsuario.setOnClickListener(this);
-        btnUsuario.setEnabled(true);
+        btnUsuario.setEnabled(false);
 
         btnHacienda = (Button)view.findViewById(R.id.btnHacienda);
         btnHacienda.setOnClickListener(this);
-        btnHacienda.setEnabled(true);
+        btnHacienda.setEnabled(false);
 
         btnSuerte = (Button)view.findViewById(R.id.btnSuerte);
         btnSuerte.setOnClickListener(this);
-        btnSuerte.setEnabled(true);
+        btnSuerte.setEnabled(false);
 
         crono = (Chronometer)view.findViewById(R.id.chronometer);
     }
@@ -206,11 +215,13 @@ public class EventoFragment extends Fragment implements OnClickListener {
                 switch (lista){
                     case "Contratista":
                         btnContratista.setText(select.toString());
+                        btnUsuario.setEnabled(true);
                         uri = Uri.parse(SET_EVENTO +":"+ select.toString());
                         //mListener.onFragmentInteraction(uri);
                         break;
                     case "Usuario":
                         btnUsuario.setText(select.toString());
+                        btnSelecTipoEven.setEnabled(true);
                         uri = Uri.parse(SET_EVENTO +":"+ select.toString());
                         //mListener.onFragmentInteraction(uri);
                         break;
@@ -218,17 +229,26 @@ public class EventoFragment extends Fragment implements OnClickListener {
                         btnSelecTipoEven.setText(select.toString());
                         uri = Uri.parse(SET_EVENTO +":"+ select.toString());
 
-                        //TODO: esto se debe hacer dependiendo de la seleccion
-                        btnHacienda.setVisibility(View.VISIBLE);
-                        btnSuerte.setVisibility(View.VISIBLE);
+                        if(select.equals("Labor en Terreno")){
+                            btnHacienda.setVisibility(View.VISIBLE);
+                            btnSuerte.setVisibility(View.VISIBLE);
+                            btnHacienda.setEnabled(true);
+                        }
+                        else {
+                            btnHacienda.setVisibility(View.INVISIBLE);
+                            btnSuerte.setVisibility(View.INVISIBLE);
+                            btnIniciarEvento.setEnabled(true);
+                        }
+
                         //mListener.onFragmentInteraction(uri);
                         break;
                     case "Hacienda":
+                        btnSuerte.setEnabled(true);
                         break;
                     case "Suerte":
+                        btnIniciarEvento.setEnabled(true);
                         break;
                 }
-
 
                 alert.cancel();
             }
@@ -304,7 +324,7 @@ public class EventoFragment extends Fragment implements OnClickListener {
             case R.id.btnTrabajador:
                 Log.i("EventosFragment", "onClick btnTrabajador");
                 Log.i("EventosFragment",btnContratista.getText().toString());
-                UsuarioList = database.obtenerUsuarioAutocompletar(Usuario.NOMBRE,btnContratista.getText().toString());
+                UsuarioList = database.obtenerUsuariosporId(Usuario.KEY_CONTRATISTA,btnContratista.getText().toString());
                 Log.i("EventosFragment","Tamaño: "+UsuarioList.size());
                 if(UsuarioList.size()>0 && UsuarioList != null){
                     UsuarioListName.clear();
@@ -337,8 +357,8 @@ public class EventoFragment extends Fragment implements OnClickListener {
 
 
 
-
             case R.id.btnInicarEvento:
+                tiempoInicio = java.text.DateFormat.getTimeInstance().format(Calendar.getInstance().getTime());
                 btnIniciarEvento.setEnabled(false);
                 btnDetenerEvento.setEnabled(true);
                 crono.setBase(SystemClock.elapsedRealtime());
@@ -347,10 +367,20 @@ public class EventoFragment extends Fragment implements OnClickListener {
                 break;
 
             case R.id.btnDetenerEvento:
+
+                tiempoFin = java.text.DateFormat.getTimeInstance().format(Calendar.getInstance().getTime());
+                fecha =java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
                 btnDetenerEvento.setEnabled(false);
                 btnIniciarEvento.setEnabled(true);
                 btnSelecTipoEven.setEnabled(true);
                 crono.stop();
+
+                TipoEvento tipoEventoSel = database.obtenerTipoEvento(btnSelecTipoEven.getText().toString());
+                Evento nuevo = new Evento(tipoEventoSel,tiempoInicio,tiempoFin,fecha);
+                database.crearEvento(nuevo);
+                Toast.makeText(thiscontext,"Se creo Evento- Fecha:"+fecha+" Hora ini: "+tiempoInicio
+                        +" Hora fin: "+tiempoFin,Toast.LENGTH_SHORT).show();
                 break;
 
             

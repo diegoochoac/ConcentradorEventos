@@ -8,12 +8,13 @@ import com.j256.ormlite.field.DatabaseField;
 public class Evento {
 
     public static final String ID = "id";
+    public static final String KEY_TIPOEVENTO = "tipoEvento";
 
 
     @DatabaseField(generatedId = true, columnName = ID)
     private int id;
 
-    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = KEY_TIPOEVENTO, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     public TipoEvento tipoEvento;
 
     @DatabaseField
@@ -29,7 +30,8 @@ public class Evento {
     public Evento() {
     }
 
-    public Evento(final String horaInicio, final String horaFin, final String fecha) {
+    public Evento(final TipoEvento tipoEvento, final String horaInicio, final String horaFin, final String fecha) {
+        this.tipoEvento = tipoEvento;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.fecha = fecha;

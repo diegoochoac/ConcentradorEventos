@@ -199,7 +199,7 @@ public class DatabaseCrud {
         return 0;
     }
 
-    public int eliminarEvento(TipoEvento eliminar)
+    public int eliminarTipoEvento(TipoEvento eliminar)
     {
         try {
             return tipoEventoDao.delete(eliminar);
@@ -207,6 +207,18 @@ public class DatabaseCrud {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public TipoEvento obtenerTipoEvento(String nombre)
+    {
+        try {
+            QueryBuilder<TipoEvento, Integer> db= tipoEventoDao.queryBuilder();
+            db.where().eq(TipoEvento.NOMBRE, nombre);
+            return db.query().get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<TipoEvento> obtenerTipoEvento()
@@ -312,7 +324,30 @@ public class DatabaseCrud {
         return null;
     }
 
-    public List<Usuario> obtenerUsuarios()
+    public List<Usuario> obtenerUsuariosporId(String id, String nombre)
+    {
+        try {
+            Contratista contra = obtenerContratista(nombre);
+            Log.i("DatabaseCrud", "obtenerUsuariosporId contratista: " + contra.getNombre());
+
+            QueryBuilder<Usuario, Integer> db= usuarioDao.queryBuilder();
+            db.where().eq(id,contra);
+            PreparedQuery<Usuario> preparedQuery = db.prepare();
+            List<Usuario> accountList = usuarioDao.query(preparedQuery);
+            Log.i("DatabaseCrud", "obtenerUsuariosporId numero: " + accountList.size());
+            if(accountList.size()>0){
+                return accountList;
+            }else{
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Usuario> obtenerUsuarios(String contratista)
     {
         try {
             return usuarioDao.queryForAll();
