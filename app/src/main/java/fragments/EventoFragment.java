@@ -108,8 +108,6 @@ public class EventoFragment extends Fragment implements OnClickListener {
         btnSuerte.setOnClickListener(this);
         btnSuerte.setEnabled(true);
 
-
-
         crono = (Chronometer)view.findViewById(R.id.chronometer);
     }
 
@@ -247,167 +245,6 @@ public class EventoFragment extends Fragment implements OnClickListener {
         alert.show();
     }
 
-
-
-    void AlerDialogListUsuario(){
-        adapterUsuario= new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,UsuarioListName);
-        AlerDialogList(adapterUsuario, "Usuario");
-    }
-
-    void AlerDialogListHacienda(){
-        final AlertDialog.Builder alertdialogbuilder = new AlertDialog.Builder(thiscontext);
-
-        final LinearLayout layout= new LinearLayout(thiscontext);
-        final ListView listview = new ListView(thiscontext);
-        final TextView Message = new TextView(thiscontext);
-        final EditText editText = new EditText(thiscontext);
-
-
-        Message.setText("Ingrese busqueda:");
-        Message.setGravity(Gravity.CENTER | Gravity.BOTTOM);
-        editText.setSingleLine();
-        editText.clearFocus();
-
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(listview);
-        layout.addView(Message);
-        layout.addView(editText);
-
-        alertdialogbuilder.setTitle("Por favor seleccione");
-        alertdialogbuilder.setView(layout);
-
-        listview.setAdapter(adapterTipoEvento);
-
-        final AlertDialog alert = alertdialogbuilder.create();
-
-        editText.addTextChangedListener(new TextWatcher(){
-            public void afterTextChanged(Editable s){
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after){
-            }
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                Log.i("EventosFragment", "onTextChanged");
-                String text = editText.getText().toString().toLowerCase().trim();
-                tipoEventoList = database.obtenerTipoEventoAutocompletar(TipoEvento.NOMBRE,text);
-                Log.i("EventosFragment", "onTextChanged tamaño: "+tipoEventoList.size()+" otras:"+tipoEventoListName.size());
-
-                if(tipoEventoList.size()>0 && tipoEventoList != null){
-                    tipoEventoListName.clear();
-                    for(int i=0; i<tipoEventoList.size(); i++){
-                        tipoEventoListName.add(tipoEventoList.get(i).getNombre());
-                        Log.i("EventosFragment", "valores"+tipoEventoList.get(i).getNombre());
-                    }
-                    adapterTipoEvento = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,tipoEventoListName);
-                    listview.setAdapter(adapterTipoEvento);
-                }
-            }
-        });
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Object select= null;
-                Uri uri = Uri.parse("");
-                select= adapterTipoEvento.getItem(position);
-                btnSelecTipoEven.setText(select.toString());
-                btnIniciarEvento.setEnabled(true);
-                btnSelecTipoEven.setEnabled(false);
-                uri = Uri.parse(SET_EVENTO +":"+ select.toString());
-                //mListener.onFragmentInteraction(uri);
-
-                alert.cancel();
-            }
-        });
-
-        alertdialogbuilder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        alert.show();
-    }
-
-    void AlerDialogListSuerte(){
-        final AlertDialog.Builder alertdialogbuilder = new AlertDialog.Builder(thiscontext);
-
-        final LinearLayout layout= new LinearLayout(thiscontext);
-        final ListView listview = new ListView(thiscontext);
-        final TextView Message = new TextView(thiscontext);
-        final EditText editText = new EditText(thiscontext);
-
-
-        Message.setText("Ingrese busqueda:");
-        Message.setGravity(Gravity.CENTER | Gravity.BOTTOM);
-        editText.setSingleLine();
-        editText.clearFocus();
-
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(listview);
-        layout.addView(Message);
-        layout.addView(editText);
-
-        alertdialogbuilder.setTitle("Por favor seleccione");
-        alertdialogbuilder.setView(layout);
-
-        listview.setAdapter(adapterTipoEvento);
-
-        final AlertDialog alert = alertdialogbuilder.create();
-
-        editText.addTextChangedListener(new TextWatcher(){
-            public void afterTextChanged(Editable s){
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after){
-            }
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                Log.i("EventosFragment", "onTextChanged");
-                String text = editText.getText().toString().toLowerCase().trim();
-                tipoEventoList = database.obtenerTipoEventoAutocompletar(TipoEvento.NOMBRE,text);
-                Log.i("EventosFragment", "onTextChanged tamaño: "+tipoEventoList.size()+" otras:"+tipoEventoListName.size());
-
-                if(tipoEventoList.size()>0 && tipoEventoList != null){
-                    tipoEventoListName.clear();
-                    for(int i=0; i<tipoEventoList.size(); i++){
-                        tipoEventoListName.add(tipoEventoList.get(i).getNombre());
-                        Log.i("EventosFragment", "valores"+tipoEventoList.get(i).getNombre());
-                    }
-                    adapterTipoEvento = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,tipoEventoListName);
-                    listview.setAdapter(adapterTipoEvento);
-                }
-            }
-        });
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Object select= null;
-                Uri uri = Uri.parse("");
-                select= adapterTipoEvento.getItem(position);
-                btnSelecTipoEven.setText(select.toString());
-                btnIniciarEvento.setEnabled(true);
-                btnSelecTipoEven.setEnabled(false);
-                uri = Uri.parse(SET_EVENTO +":"+ select.toString());
-                //mListener.onFragmentInteraction(uri);
-
-                alert.cancel();
-            }
-        });
-
-        alertdialogbuilder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        alert.show();
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -466,7 +303,9 @@ public class EventoFragment extends Fragment implements OnClickListener {
 
             case R.id.btnTrabajador:
                 Log.i("EventosFragment", "onClick btnTrabajador");
-                UsuarioList = database.obtenerUsuarios();
+                Log.i("EventosFragment",btnContratista.getText().toString());
+                UsuarioList = database.obtenerUsuarioAutocompletar(Usuario.NOMBRE,btnContratista.getText().toString());
+                Log.i("EventosFragment","Tamaño: "+UsuarioList.size());
                 if(UsuarioList.size()>0 && UsuarioList != null){
                     UsuarioListName.clear();
                     for(int i=0; i<UsuarioList.size(); i++){

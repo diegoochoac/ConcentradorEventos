@@ -72,7 +72,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(source,Evento.class);
             TableUtils.createTable(source,TipoEvento.class);
             registrosInicialesEventos();
-            registrosInicialesContratistas();
+            registrosInicialesContratistasUsuario();
 
         }catch (SQLException ex) {
             Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear base de datos",ex);
@@ -197,14 +197,26 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             throw  new RuntimeException(ex);
         }
     }
-    public void registrosInicialesContratistas(){
+    public void registrosInicialesContratistasUsuario(){
         try {
             Contratista nuevoCon = new Contratista("Ingenio Castilla");
             contratistaDao.create(nuevoCon);
+
+            Usuario nuevoUsu = new Usuario("Diego Ochoa",nuevoCon);
+            usuarioDao.create(nuevoUsu);
+            nuevoUsu = new Usuario("Andres Millan",nuevoCon);
+            usuarioDao.create(nuevoUsu);
+
             nuevoCon = new Contratista("Ingenio Manuelita");
             contratistaDao.create(nuevoCon);
+            nuevoUsu = new Usuario("Pepito Perez",nuevoCon);
+            usuarioDao.create(nuevoUsu);
+
             nuevoCon = new Contratista("Ingenio Incauca");
             contratistaDao.create(nuevoCon);
+            nuevoUsu = new Usuario("Juan Solarte",nuevoCon);
+            usuarioDao.create(nuevoUsu);
+
         }
         catch (SQLException ex) {
             Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear registrosIniciales",ex);
