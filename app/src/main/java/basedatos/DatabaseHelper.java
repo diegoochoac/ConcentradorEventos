@@ -20,6 +20,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 import basedatos.contratista.Contratista;
+import basedatos.contratista.Maquina;
 import basedatos.contratista.Usuario;
 import basedatos.evento.Evento;
 import basedatos.evento.TipoEvento;
@@ -37,6 +38,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     //Contratista
     private Dao<Usuario,Integer> usuarioDao;
     private Dao<Contratista, Integer> contratistaDao;
+    private Dao<Maquina, Integer> maquinaDao;
     //Terreno
     private Dao<Hacienda, Integer> haciendaDao;
     private Dao<Suerte, Integer> suerteDao;
@@ -65,14 +67,20 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             //
             TableUtils.createTable(source,Usuario.class);
             TableUtils.createTable(source,Contratista.class);
+            TableUtils.createTable(source,Maquina.class);
+
             TableUtils.createTable(source,Hacienda.class);
             TableUtils.createTable(source,Suerte.class);
             TableUtils.createTable(source,Variedad.class);
             TableUtils.createTable(source,Zona.class);
+
             TableUtils.createTable(source,Evento.class);
             TableUtils.createTable(source,TipoEvento.class);
+
+
             registrosInicialesEventos();
             registrosInicialesContratistasUsuario();
+            registrosInicialesTerreno();
 
         }catch (SQLException ex) {
             Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear base de datos",ex);
@@ -95,6 +103,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             //
             TableUtils.dropTable(source,Usuario.class, true);
             TableUtils.dropTable(source,Contratista.class, true);
+            TableUtils.dropTable(source,Maquina.class, true);
             //
             TableUtils.dropTable(source,Hacienda.class, true);
             TableUtils.dropTable(source,Suerte.class, true);
@@ -113,6 +122,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     //<editor-fold desc="Metodos Get">
+
+
+    public Dao<Maquina, Integer> getMaquinaDao() throws SQLException {
+        if(maquinaDao==null){
+            maquinaDao = getDao(Maquina.class);
+        }
+        return maquinaDao;
+    }
 
     public Dao<Usuario, Integer> getUsuarioDao()  throws SQLException {
         if(usuarioDao==null){
@@ -199,15 +216,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             throw  new RuntimeException(ex);
         }
     }
+
     public void registrosInicialesContratistasUsuario(){
         try {
-            Contratista nuevoCon = new Contratista("Ingenio Castilla");
+            Contratista nuevoCon = new Contratista("Operadores Campo");
             contratistaDao.create(nuevoCon);
 
             Usuario nuevoUsu = new Usuario("Diego Ochoa",nuevoCon);
             usuarioDao.create(nuevoUsu);
             nuevoUsu = new Usuario("Andres Millan",nuevoCon);
             usuarioDao.create(nuevoUsu);
+
+            Maquina nuevaMaq = new Maquina("deere f2000",nuevoCon);
+            maquinaDao.create(nuevaMaq);
 
             nuevoCon = new Contratista("Ingenio Manuelita");
             contratistaDao.create(nuevoCon);
@@ -225,6 +246,34 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             throw  new RuntimeException(ex);
         }
     }
+
+    public void registrosInicialesTerreno(){
+        try {
+            Hacienda nuevaHac= new Hacienda("001","Hacienda Maria");
+            haciendaDao.create(nuevaHac);
+
+            Variedad nuevaVar = new Variedad("0101");
+            variedadDao.create(nuevaVar);
+            Zona nuevaZona = new Zona("0101");
+            zonaDao.create(nuevaZona);
+
+            Suerte nuevaSuer = new Suerte("Suerte1","120",nuevaHac,nuevaVar,nuevaZona);
+            suerteDao.create(nuevaSuer);
+
+            nuevaHac = new Hacienda("002","Ingenio Manuelita");
+            haciendaDao.create(nuevaHac);
+
+            nuevaHac = new Hacienda("003","Ingenio Incauca");
+            haciendaDao.create(nuevaHac);
+
+
+        }
+        catch (SQLException ex) {
+            Log.e(DatabaseHelper.class.getSimpleName(),"Imposible crear registrosIniciales",ex);
+            throw  new RuntimeException(ex);
+        }
+    }
+
 
 
 }

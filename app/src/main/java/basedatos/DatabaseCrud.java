@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import basedatos.contratista.Contratista;
+import basedatos.contratista.Maquina;
 import basedatos.contratista.Usuario;
 import basedatos.evento.Evento;
 import basedatos.evento.TipoEvento;
@@ -38,6 +39,8 @@ public class DatabaseCrud {
 
     private Dao<Usuario, Integer> usuarioDao;
     private Dao<Contratista,Integer> contratistaDao;
+    private Dao<Maquina, Integer> maquinaDao;
+
     private Dao<Hacienda, Integer> haciendaDao;
     private Dao<Suerte, Integer> suerteDao;
     private Dao<Variedad, Integer> variedadDao;
@@ -52,6 +55,7 @@ public class DatabaseCrud {
 
             tipoEventoDao = getHelper().getTipoeventoDao();
             eventoDao = getHelper().getEventoDao();
+            maquinaDao = getHelper().getMaquinaDao();
             usuarioDao = getHelper().getUsuarioDao();
             contratistaDao = getHelper().getContratistaDao();
             haciendaDao = getHelper().getHaciendaDao();
@@ -165,7 +169,7 @@ public class DatabaseCrud {
     public void updateSyncStatusEvento(String id, String status) {
         try {
             UpdateBuilder<Evento,Integer> actualizar = eventoDao.updateBuilder();
-            actualizar.where().eq("usuario_id",id);
+            actualizar.where().eq("id",id);
             actualizar.updateColumnValue("updateState",status);
             actualizar.update();
 
@@ -357,11 +361,15 @@ public class DatabaseCrud {
         return null;
     }
 
-    public List<Usuario> obtenerUsuarioAutocompletar(String campo, String palabra){
+    public List<Usuario> obtenerUsuarioAutocompletar(String campo, String palabra, String id, String nombre){
         try {
+            Contratista contra = obtenerContratista(nombre);
+
             QueryBuilder<Usuario, Integer> db= usuarioDao.queryBuilder();
             Where<Usuario, Integer> where = db.where();
             where.like(campo, palabra+"%");
+            where.and();
+            where.eq(id,contra);
             return where.query();
 
         } catch (SQLException e) {
@@ -498,6 +506,136 @@ public class DatabaseCrud {
     public void updateSyncStatusContratistao(String id, String status) {
         try {
             UpdateBuilder<Contratista,Integer> actualizar = contratistaDao.updateBuilder();
+            actualizar.where().eq("usuario_id",id);
+            actualizar.updateColumnValue("updateState",status);
+            actualizar.update();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="CRUD Maquina">
+    public int crearMaquina(Maquina nuevo){
+        try {
+            Log.i("DatabaseCrud","crearUsuario Bien: "+nuevo.getNombre());
+            return maquinaDao.create(nuevo);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int actualizarMaquina(Maquina actualizar)
+    {
+        try {
+            return maquinaDao.update(actualizar);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int eliminarMaquina(Maquina eliminar)
+    {
+        try {
+            return maquinaDao.delete(eliminar);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public Maquina obtenerMaquina(String nombre)
+    {
+        try {
+            QueryBuilder<Maquina, Integer> db= maquinaDao.queryBuilder();
+            db.where().eq(Maquina.NOMBRE, nombre);
+            return db.query().get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Maquina> obtenerMaquinasporId(String id, String nombre)
+    {
+        try {
+            Contratista contra = obtenerContratista(nombre);
+            Log.i("DatabaseCrud", "obtenerUsuariosporId contratista: " + contra.getNombre());
+
+            QueryBuilder<Maquina, Integer> db= maquinaDao.queryBuilder();
+            db.where().eq(id,contra);
+            PreparedQuery<Maquina> preparedQuery = db.prepare();
+            List<Maquina> accountList = maquinaDao.query(preparedQuery);
+            Log.i("DatabaseCrud", "obtenerUMaquinaporId numero: " + accountList.size());
+            if(accountList.size()>0){
+                return accountList;
+            }else{
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Maquina> obtenerMaquinas(String contratista)
+    {
+        try {
+            return maquinaDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Maquina> obtenerMaquinaAutocompletar(String campo, String palabra, String id, String nombre){
+        try {
+            Contratista contra = obtenerContratista(nombre);
+
+            QueryBuilder<Maquina, Integer> db= maquinaDao.queryBuilder();
+            Where<Maquina, Integer> where = db.where();
+            where.like(campo, palabra+"%");
+            where.and();
+            where.eq(id,contra);
+            return where.query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public String composeJSONfromSQLiteMaquina(){
+        List<Maquina> listaNoSincronizados = null;
+        try {
+            listaNoSincronizados = maquinaDao.queryBuilder().where().eq("updateState","No").query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Gson gson = new GsonBuilder().create();
+        return gson.toJson(listaNoSincronizados);
+    }
+
+    public int dbSyncCountMaquina() {
+        int count = 0;
+        try {
+            return (int) maquinaDao.queryBuilder().where().eq("updateState","No").countOf();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public void updateSyncStatusMaquina(String id, String status) {
+        try {
+            UpdateBuilder<Maquina,Integer> actualizar = maquinaDao.updateBuilder();
             actualizar.where().eq("usuario_id",id);
             actualizar.updateColumnValue("updateState",status);
             actualizar.update();
@@ -699,11 +837,14 @@ public class DatabaseCrud {
         return null;
     }
 
-    public List<Suerte> obtenerSuertesAutocompletar(String campo, String palabra){
+    public List<Suerte> obtenerSuertesAutocompletar(String campo, String palabra, String id, String nombre){
         try {
+            Hacienda haciendasele = obtenerHacienda(nombre);
             QueryBuilder<Suerte, Integer> db= suerteDao.queryBuilder();
             Where<Suerte, Integer> where = db.where();
             where.like(campo, palabra+"%");
+            where.and();
+            where.eq(id,haciendasele);
             return where.query();
 
         } catch (SQLException e) {
@@ -748,6 +889,8 @@ public class DatabaseCrud {
     }
 
     //</editor-fold>
+
+
 
     public int crearVariedad(Variedad nuevo){
         try {

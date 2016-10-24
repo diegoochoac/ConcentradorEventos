@@ -9,6 +9,7 @@ public class Evento {
 
     public static final String ID = "id";
     public static final String KEY_TIPOEVENTO = "tipoEvento";
+    public static final String STATE = "updateState";
 
 
     @DatabaseField(generatedId = true, columnName = ID)
@@ -26,15 +27,19 @@ public class Evento {
     @DatabaseField
     private String horaFin;
 
+    @DatabaseField(columnName = STATE)
+    private String updateState;
+
 
     public Evento() {
     }
 
-    public Evento(final TipoEvento tipoEvento, final String horaInicio, final String horaFin, final String fecha) {
+    public Evento(final TipoEvento tipoEvento, final String horaInicio, final String horaFin, final String fecha, String state) {
         this.tipoEvento = tipoEvento;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.fecha = fecha;
+        this.updateState = state;
     }
 
     //<editor-fold desc="Metodos Get-Set">
@@ -77,5 +82,14 @@ public class Evento {
     public void setTipoEvento(TipoEvento tipoEvento) {
         this.tipoEvento = tipoEvento;
     }
+
+    public String getUpdateState() {
+        return updateState;
+    }
+
+    public void setUpdateState(String updateState) {
+        this.updateState = updateState;
+    }
+
     //</editor-fold>
 }

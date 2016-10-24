@@ -44,6 +44,7 @@ import java.util.List;
 
 import basedatos.DatabaseCrud;
 import basedatos.contratista.Contratista;
+import basedatos.contratista.Maquina;
 import basedatos.contratista.Usuario;
 import basedatos.evento.Evento;
 import basedatos.evento.TipoEvento;
@@ -55,7 +56,7 @@ import basedatos.terreno.Suerte;
  */
 public class EventoFragment extends Fragment implements OnClickListener {
 
-    private Button btnContratista, btnUsuario, btnHacienda, btnSuerte, btnSelecTipoEven, btnIniciarEvento;
+    private Button btnContratista, btnUsuario, btnMaquina, btnHacienda, btnSuerte, btnSelecTipoEven, btnIniciarEvento;
 
     long time =0;
     private boolean inicio = false;
@@ -72,6 +73,11 @@ public class EventoFragment extends Fragment implements OnClickListener {
     private List<String> UsuarioListName = new ArrayList<>();
     private ArrayAdapter<String> adapterUsuario;
     private String usuario="";
+
+    private List<Maquina> MaquinaList;
+    private List<String> MaquinaListName = new ArrayList<>();
+    private ArrayAdapter<String> adapterMaquina;
+    private String maquina="";
 
     private List<TipoEvento> tipoEventoList;
     private List<String> tipoEventoListName = new ArrayList<>();
@@ -129,6 +135,10 @@ public class EventoFragment extends Fragment implements OnClickListener {
         btnUsuario = (Button)view.findViewById(R.id.btnTrabajador);
         btnUsuario.setOnClickListener(this);
         btnUsuario.setEnabled(false);
+
+        btnMaquina = (Button)view.findViewById(R.id.btnMaquina);
+        btnMaquina.setOnClickListener(this);
+        btnMaquina.setEnabled(false);
 
         btnHacienda = (Button)view.findViewById(R.id.btnHacienda);
         btnHacienda.setOnClickListener(this);
@@ -206,6 +216,21 @@ public class EventoFragment extends Fragment implements OnClickListener {
                         }
                         break;
 
+                    case "Maquina":
+                        MaquinaList = database.obtenerMaquinaAutocompletar(Maquina.NOMBRE,text,Maquina.KEY_CONTRATISTA,contratista);
+                        Log.i("EventosFragment", "Maquina tamaño: "+MaquinaList.size()+" otras:"+MaquinaListName.size());
+                        if(MaquinaList.size()>0 && MaquinaList != null){
+                            MaquinaListName.clear();
+                            for(int i=0; i<MaquinaList.size(); i++){
+                                MaquinaListName.add(MaquinaList.get(i).getNombre());
+                                Log.i("EventosFragment", "valores: "+MaquinaList.get(i).getNombre());
+                            }
+                        }else{
+                            MaquinaListName.clear();
+                            MaquinaListName.add("No se encuentra Busqueda");
+                        }
+                        break;
+
                     case "Evento":
                         tipoEventoList = database.obtenerTipoEventoAutocompletar(TipoEvento.NOMBRE,text);
                         Log.i("EventosFragment", "Evento tamaño: "+tipoEventoList.size()+" otras:"+tipoEventoListName.size());
@@ -275,9 +300,14 @@ public class EventoFragment extends Fragment implements OnClickListener {
                     case "Usuario":
                         usuario = select.toString();
                         btnUsuario.setText("USUARIO: "+usuario);
-                        btnSelecTipoEven.setEnabled(true);
+                        btnMaquina.setEnabled(true);
                         uri = Uri.parse(SET_EVENTO +":"+ select.toString());
                         //mListener.onFragmentInteraction(uri);
+                        break;
+                    case "Maquina":
+                        maquina = select.toString();
+                        btnMaquina.setText("MAQUINA: "+maquina);
+                        btnSelecTipoEven.setEnabled(true);
                         break;
                     case "Evento":
                         evento = select.toString();
@@ -398,6 +428,24 @@ public class EventoFragment extends Fragment implements OnClickListener {
                     AlerDialogList(adapterUsuario, "Usuario");
                 }else{
                     Log.i("EventosFragment", "onClick btnTrabajador Ninguno");
+                    Toast.makeText(thiscontext,"No se encuentran registros",Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.btnMaquina:
+                Log.i("EventosFragment", "onClick btnMaquina");
+                Log.i("EventosFragment",maquina);
+                MaquinaList = database.obtenerMaquinasporId(Maquina.KEY_CONTRATISTA,contratista);
+                Log.i("EventosFragment","Tamaño: "+MaquinaList.size());
+                if(MaquinaList.size()>0 && MaquinaList != null){
+                    MaquinaListName.clear();
+                    for(int i=0; i<MaquinaList.size(); i++){
+                        MaquinaListName.add(MaquinaList.get(i).getNombre());
+                    }
+                    adapterMaquina = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,MaquinaListName);
+                    AlerDialogList(adapterMaquina, "Maquina");
+                }else{
+                    Log.i("EventosFragment", "onClick btnMaquina Ninguno");
                     Toast.makeText(thiscontext,"No se encuentran registros",Toast.LENGTH_SHORT).show();
                 }
                 break;
