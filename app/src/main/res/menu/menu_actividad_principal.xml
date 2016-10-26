@@ -14,7 +14,7 @@
         <item
             android:id="@+id/item_categorias"
             android:icon="@drawable/categorias"
-            android:title="@string/item_categorias" />
+            android:title="@string/item_Historial" />
         <item
             android:id="@+id/item_configuracion"
             android:icon="@drawable/configuracion"

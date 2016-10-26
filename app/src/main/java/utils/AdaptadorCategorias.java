@@ -18,7 +18,7 @@ import java.util.List;
 public class AdaptadorCategorias extends RecyclerView.Adapter<AdaptadorCategorias.ViewHolder> {
 
 
-    private final List<Comida> items;
+    private final List<Eventos> items;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
@@ -36,7 +36,7 @@ public class AdaptadorCategorias extends RecyclerView.Adapter<AdaptadorCategoria
     }
 
 
-    public AdaptadorCategorias(List<Comida> items) {
+    public AdaptadorCategorias(List<Eventos> items) {
         this.items = items;
     }
 
@@ -54,7 +54,7 @@ public class AdaptadorCategorias extends RecyclerView.Adapter<AdaptadorCategoria
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Comida item = items.get(i);
+        Eventos item = items.get(i);
 
         Glide.with(viewHolder.itemView.getContext())
                 .load(item.getIdDrawable())

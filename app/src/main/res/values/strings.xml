@@ -5,13 +5,13 @@
 
     <string name="item_inicio">Inicio</string>
     <string name="item_cuenta">Mi Cuenta</string>
-    <string name="item_categorias">Categorías</string>
+    <string name="item_Historial">Historial</string>
     <string name="item_configuracion">Configuración</string>
 
     <string name="titulo_eventos_populares">Historial de Eventos</string>
 
-    <string name="titulo_tab_platillos">PLATILLOS</string>
-    <string name="titulo_tab_bebidas">BEBIDAS</string>
-    <string name="titulo_tab_postres">POSTRES</string>
+    <string name="titulo_tab_eventos">EVENTOS</string>
+    <string name="titulo_tab_eventos_usuario">USUARIO</string>
+    <string name="titulo_tab_eventos_dia">EVENTOS DIA</string>
 
 </resources>

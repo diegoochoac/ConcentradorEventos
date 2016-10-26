@@ -36,7 +36,7 @@ public class AdaptadorInicio
 
     @Override
     public int getItemCount() {
-        return Comida.COMIDAS_POPULARES.size();
+        return Eventos.COMIDAS_POPULARES.size();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AdaptadorInicio
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Comida item = Comida.COMIDAS_POPULARES.get(i);          //TODO: CAmbiar por algo real
+        Eventos item = Eventos.COMIDAS_POPULARES.get(i);          //TODO: CAmbiar por algo real
 
         Glide.with(viewHolder.itemView.getContext())
                 .load(item.getIdDrawable())

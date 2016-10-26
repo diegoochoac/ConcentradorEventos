@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.concentrador.agrum.concentradoreventos.R;
 
 import utils.AdaptadorCategorias;
-import utils.Comida;
+import utils.Eventos;
 
 /**
  * Fragmento que representa el contenido de cada pestaña dentro de la sección "Categorías"
@@ -46,13 +46,13 @@ public class FragmentoCategoria extends Fragment {
 
         switch (indiceSeccion) {
             case 0:
-                adaptador = new AdaptadorCategorias(Comida.PLATILLOS);
+                adaptador = new AdaptadorCategorias(Eventos.EVENTOS);
                 break;
             case 1:
-                adaptador = new AdaptadorCategorias(Comida.BEBIDAS);
+                adaptador = new AdaptadorCategorias(Eventos.BEBIDAS);
                 break;
             case 2:
-                adaptador = new AdaptadorCategorias(Comida.POSTRES);
+                adaptador = new AdaptadorCategorias(Eventos.POSTRES);
                 break;
         }
 

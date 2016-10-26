@@ -2,6 +2,9 @@ package basedatos.evento;
 
 import com.j256.ormlite.field.DatabaseField;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by diego on 12/09/16.
  */
@@ -92,4 +95,6 @@ public class Evento {
     }
 
     //</editor-fold>
+
+
 }

@@ -70,13 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
         switch (itemDrawer.getItemId()) {
             case R.id.item_inicio:
-                fragmentoGenerico = new FragmentoInicio();
+                fragmentoGenerico = new FragmentoCategorias();
                 break;
             case R.id.item_cuenta:
                 // Fragmento para la sección Cuenta
                 break;
             case R.id.item_categorias:
-                fragmentoGenerico = new FragmentoCategorias();
+                fragmentoGenerico = new FragmentoInicio();
                 break;
             case R.id.item_configuracion:
                 // Iniciar actividad de configuración

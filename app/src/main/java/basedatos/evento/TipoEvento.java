@@ -3,6 +3,8 @@ package basedatos.evento;
 import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by diego on 12/09/16.
@@ -17,6 +19,7 @@ public class TipoEvento implements Serializable {
 
     @DatabaseField(columnName = NOMBRE)
     private String nombre;
+
 
     public TipoEvento() {
     }
