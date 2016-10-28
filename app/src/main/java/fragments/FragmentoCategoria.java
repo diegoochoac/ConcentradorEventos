@@ -4,19 +4,24 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 
 import com.concentrador.agrum.concentradoreventos.R;
 
+import basedatos.evento.Evento;
+import basedatos.evento.TipoEvento;
 import utils.AdaptadorCategorias;
 import utils.Eventos;
+import utils.ItemClickListener;
 
 /**
  * Fragmento que representa el contenido de cada pestaña dentro de la sección "Categorías"
  */
-public class FragmentoCategoria extends Fragment {
+public class FragmentoCategoria extends Fragment implements ItemClickListener {
 
     private static final String INDICE_SECCION
             = "com.restaurantericoparico.FragmentoCategoriasTab.extra.INDICE_SECCION";
@@ -47,9 +52,10 @@ public class FragmentoCategoria extends Fragment {
         switch (indiceSeccion) {
             case 0:
                 adaptador = new AdaptadorCategorias(Eventos.EVENTOS);
+                Log.i("posision","Adaptadorrrrrrrrrrr:");
                 break;
             case 1:
-                adaptador = new AdaptadorCategorias(Eventos.BEBIDAS);
+                adaptador = new AdaptadorCategorias(Eventos.BEBIDAS);//TODO cambiar
                 break;
             case 2:
                 adaptador = new AdaptadorCategorias(Eventos.POSTRES);
@@ -57,8 +63,13 @@ public class FragmentoCategoria extends Fragment {
         }
 
         reciclador.setAdapter(adaptador);
-
+        adaptador.setClickListener(this);
         return view;
     }
 
+
+    @Override
+    public void onClick(View view, int position) {
+        Log.i("PRUEBA CLICK","posicion: "+position);
+    }
 }
