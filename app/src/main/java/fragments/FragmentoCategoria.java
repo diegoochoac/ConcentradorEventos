@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 
 import com.concentrador.agrum.concentradoreventos.R;
 
+import basedatos.contratista.Contratista;
 import utils.AdaptadorCategorias;
+import utils.AdaptadorContratista;
+import utils.Contratistas;
 import utils.Eventos;
 import utils.ItemClickListener;
 import utils.OnFragmentInteractionListener;
@@ -29,6 +32,9 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
     private RecyclerView reciclador;
     private GridLayoutManager layoutManager;
     private AdaptadorCategorias adaptador;
+    private AdaptadorContratista adaptadorContratista;
+
+    int indiceSeccion;
 
     private OnFragmentInteractionListener mCallback = null;
 
@@ -51,26 +57,34 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmento_grupo_items, container, false);
 
-        reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
-        layoutManager = new GridLayoutManager(getActivity(), 2);
-        reciclador.setLayoutManager(layoutManager);
+        reciclador = (RecyclerView) view.findViewById(R.id.reciclador1);
 
-        int indiceSeccion = getArguments().getInt(INDICE_SECCION);
+        indiceSeccion = getArguments().getInt(INDICE_SECCION);
 
         switch (indiceSeccion) {
             case 0:
+                layoutManager = new GridLayoutManager(getActivity(), 2);
+                reciclador.setLayoutManager(layoutManager);
+
                 adaptador = new AdaptadorCategorias(Eventos.EVENTOS);
+                reciclador.setAdapter(adaptador);
+                adaptador.setClickListener(this);
                 break;
             case 1:
-                adaptador = new AdaptadorCategorias(Eventos.BEBIDAS);//TODO cambiar
+                layoutManager = new GridLayoutManager(getActivity(), 3);
+                reciclador.setLayoutManager(layoutManager);
+
+                adaptadorContratista = new AdaptadorContratista(Contratistas.CONTRATISTAS);//TODO cambiar
+                reciclador.setAdapter(adaptadorContratista);
+                adaptadorContratista.setClickListener(this);
                 break;
             case 2:
-                adaptador = new AdaptadorCategorias(Eventos.POSTRES);
+                //adaptador = new AdaptadorCategorias(Eventos.POSTRES);
+                //reciclador.setAdapter(adaptador);
+                //adaptador.setClickListener(this);
                 break;
         }
 
-        reciclador.setAdapter(adaptador);
-        adaptador.setClickListener(this);
         return view;
     }
 
@@ -111,11 +125,22 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
 
     @Override
     public void onClick(View view, int position) {
-        Log.i("Fragmento Categoria","posicion: "+position);
 
-        Bundle args = new Bundle();
-        args.putInt("EventoSelec",position);
-        mCallback.onFragmentIteration(args);
+        switch (indiceSeccion) {
+            case 0:
+                Log.i("Fragmento Categoria","Evento posicion: "+position);
+                Bundle args = new Bundle();
+                args.putInt("EventoSelec",position);
+                mCallback.onFragmentIteration(args);
+                break;
+            case 1:
+                Log.i("Fragmento Categoria","Contratista posicion: "+position);
+                break;
+            case 2:
+                Log.i("Fragmento Categoria","Lugar posicion: "+position);
+                break;
+        }
+
 
     }
 }
