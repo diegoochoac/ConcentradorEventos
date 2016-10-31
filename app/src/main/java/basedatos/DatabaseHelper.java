@@ -49,6 +49,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<TipoEvento, Integer> tipoeventoDao;
 
 
+
     public DatabaseHelper(Context context) {
         //super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

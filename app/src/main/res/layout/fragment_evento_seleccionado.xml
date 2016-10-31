@@ -1,0 +1,144 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/viewOne"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:id="@+id/imageEvento"
+                    android:layout_weight="0.3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/viewTwo"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:background="@color/accentColor">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="EVENTO"
+                    android:id="@+id/txEvento"
+                    android:layout_gravity="left|center_horizontal"
+                    android:layout_weight="1.01"
+                    android:gravity="left|center"
+                    android:layout_marginLeft="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/viewThree"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="@color/colorGris"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Contratista:"
+                    android:id="@+id/txContratista"
+                    android:layout_gravity="left|center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Trabajador:"
+                    android:id="@+id/txTrabajador"
+                    android:layout_gravity="left|center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Maquina:"
+                    android:id="@+id/txMaquina"
+                    android:layout_gravity="left|center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Hacienda:"
+                    android:id="@+id/txHacienda"
+                    android:textSize="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Suerte:"
+                    android:id="@+id/txSuerte"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="5dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab1"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:src="@drawable/ic_regresar"
+            android:layout_gravity="bottom|end"
+            app:backgroundTint="#055FF0"
+            app:rippleColor="#FFF" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:src="@drawable/startblack"
+
+            android:layout_gravity="center|right"
+            app:backgroundTint="#05FF50"
+            app:rippleColor="#FFF"
+            android:baselineAlignBottom="false" />
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>
+
+

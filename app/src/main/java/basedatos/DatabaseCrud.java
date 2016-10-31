@@ -68,6 +68,7 @@ public class DatabaseCrud {
         }
     }
 
+
     private DatabaseHelper getHelper() {
         Log.i("DatabaseCrud", "DatabaseHelper");
         if (databaseHelper == null) {

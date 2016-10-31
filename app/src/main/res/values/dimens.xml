@@ -8,6 +8,6 @@
     <dimen name="espacio_norma_2">8dp</dimen>
 
     <dimen name="padding_izquierdo_cabecera">16dp</dimen>
-
+    <dimen name="margenes">5dp</dimen>
 
 </resources>

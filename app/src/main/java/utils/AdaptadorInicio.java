@@ -55,7 +55,7 @@ public class AdaptadorInicio
                 .centerCrop()
                 .into(viewHolder.imagen);
         viewHolder.nombre.setText(item.getNombre());
-        viewHolder.precio.setText("$" + item.getPrecio());
+        viewHolder.precio.setText("" + item.getPrecio());
 
     }
 

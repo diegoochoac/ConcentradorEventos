@@ -1,32 +1,29 @@
 package com.concentrador.agrum.concentradoreventos;
 
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
-import fragments.EventoFragment;
+import basedatos.DatabaseCrud;
+import fragments.EventoSeleccionado;
 import fragments.FragmentoCategorias;
 import fragments.FragmentoInicio;
+import utils.OnFragmentInteractionListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
     private DrawerLayout drawerLayout;
+
+    //BASE DE DATOS
+    private DatabaseCrud database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             // Seleccionar item por defecto
             seleccionarItem(navigationView.getMenu().getItem(0));
         }
+
+        database = new DatabaseCrud(getApplicationContext()); //TODO revisar por que al quitar el context deja de funcionar
 
         //<editor-fold desc="Ocultar toolbar naview">
 /*      requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -120,20 +119,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actividad_principal, menu);
-        return true;
+    public void onFragmentIteration(Bundle parameters) {
+        Bundle param = parameters;
+
+        int EventoSeleccionado = param.getInt("EventoSelec");
+        boolean regresar = param.getBoolean("Regresar");
+
+        Fragment fragmentoGenerico= null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle args = new Bundle();
+
+        if(EventoSeleccionado != -1){
+            fragmentoGenerico = new EventoSeleccionado();
+            args.putInt("Evento",EventoSeleccionado);
+            args.putString("Contratista", "");
+            args.putString("Trabajador", "");
+            args.putString("Trabajador", "");
+            args.putString("Maquina", "");
+            args.putString("Hacienda", "");
+            args.putString("Suerte", "");
+            fragmentoGenerico.setArguments(args);
+        }
+
+        if(regresar==true){
+            fragmentoGenerico = new FragmentoCategorias();
+        }
+
+
+        if (fragmentoGenerico != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.contenedor_principal, fragmentoGenerico)
+                    .commit();
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
 
     //<editor-fold desc="Ocultar">
