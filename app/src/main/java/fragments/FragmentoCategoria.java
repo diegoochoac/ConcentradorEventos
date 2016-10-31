@@ -71,6 +71,8 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                 adaptador.setClickListener(this);
                 break;
             case 1:
+                break;
+            case 2:
                 layoutManager = new GridLayoutManager(getActivity(), 3);
                 reciclador.setLayoutManager(layoutManager);
 
@@ -78,7 +80,7 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                 reciclador.setAdapter(adaptadorContratista);
                 adaptadorContratista.setClickListener(this);
                 break;
-            case 2:
+            case 3:
                 //adaptador = new AdaptadorCategorias(Eventos.POSTRES);
                 //reciclador.setAdapter(adaptador);
                 //adaptador.setClickListener(this);
@@ -134,9 +136,12 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                 mCallback.onFragmentIteration(args);
                 break;
             case 1:
-                Log.i("Fragmento Categoria","Contratista posicion: "+position);
+                Log.i("Fragmento Categoria","Usuario posicion: "+position);
                 break;
             case 2:
+                Log.i("Fragmento Categoria","Maquina posicion: "+position);
+                break;
+            case 3:
                 Log.i("Fragmento Categoria","Lugar posicion: "+position);
                 break;
         }

@@ -11,7 +11,8 @@
     <string name="titulo_eventos_populares">Historial de Eventos</string>
 
     <string name="titulo_tab_eventos">EVENTO</string>
-    <string name="titulo_tab_contratista">CONTRATISTA</string>
+    <string name="titulo_tab_usuario">USUARIO</string>
+    <string name="titulo_tab_maquina">MAQUINA</string>
     <string name="titulo_tab_lugar">LUGAR</string>
 
     <!-- TODO: Remove or change this placeholder text -->
