@@ -1,5 +1,6 @@
 package fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.concentrador.agrum.concentradoreventos.R;
 
 import utils.AdaptadorInicio;
 import utils.ItemClickListener;
+import utils.OnFragmentInteractionListener;
 
 
 public class FragmentoInicio extends Fragment implements ItemClickListener {
@@ -25,9 +27,11 @@ public class FragmentoInicio extends Fragment implements ItemClickListener {
     //private GridLayoutManager layoutManager;
     private AdaptadorInicio adaptador;
 
+    private OnFragmentInteractionListener mCallback = null;
+
+
     public FragmentoInicio() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,9 +51,46 @@ public class FragmentoInicio extends Fragment implements ItemClickListener {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mCallback = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + "El Activity debe implementar la interfaz FragmentIterationListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("Fragmento Inicio","onStart");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i("Fragmento Inicio","onPause");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("Fragmento Inicio","onDestroy");
+    }
+
+    @Override
     public void onClick(View view, int position) {
 
         Log.i("Fragmento Inicio","Registro Posicion: "+position);
-
+        Bundle args = new Bundle();
+        args.putInt("Registro",position);
+        mCallback.onFragmentIteration(args);
     }
 }

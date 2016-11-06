@@ -16,7 +16,7 @@ import com.concentrador.agrum.concentradoreventos.R;
 import utils.OnFragmentInteractionListener;
 
 
-public class EventoSeleccionado extends Fragment {
+public class FragmentoLabor extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,12 +35,12 @@ public class EventoSeleccionado extends Fragment {
 
 
 
-    public EventoSeleccionado() {
+    public FragmentoLabor() {
         // Required empty public constructor
     }
 
-    public static EventoSeleccionado newInstance(String param1, String param2) {
-        EventoSeleccionado fragment = new EventoSeleccionado();
+    public static FragmentoLabor newInstance(String param1, String param2) {
+        FragmentoLabor fragment = new FragmentoLabor();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -119,10 +119,11 @@ public class EventoSeleccionado extends Fragment {
         FAB1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Evento Selecciondado","Boton Regresar");
+                /*Log.i("Fragmento Labor","Boton Regresar");
                 Bundle args = new Bundle();
                 args.putBoolean("Regresar",true);
-                mCallback.onFragmentIteration(args);
+                mCallback.onFragmentIteration(args);*///TOO:Arreglar para que se devuelva
+
             }
         });
 
@@ -130,12 +131,13 @@ public class EventoSeleccionado extends Fragment {
         FAB2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Evento Selecciondado","Boton Iniciar");
+                Log.i("Fragmento Labor","Boton Iniciar");
             }
         });
 
         return view;
     }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -158,19 +160,19 @@ public class EventoSeleccionado extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i("Evento Seleccionado","onStart");
+        Log.i("Fragmento Labor","onStart");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.i("Evento Seleccionado","onPause");
+        Log.i("Fragmento Labor","onPause");
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("Evento Seleccionado","onDestroy");
+        Log.i("Fragmento Labor","onDestroy");
     }
 }

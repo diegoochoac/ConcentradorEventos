@@ -19,19 +19,15 @@ public class Eventos {
         this.idDrawable = idDrawable;
     }
 
-    public static final List<Eventos> COMIDAS_POPULARES = new ArrayList<Eventos>();
+    public static final List<Eventos> MENU_REGISTRO = new ArrayList<Eventos>();
 
     public static final List<Eventos> EVENTOS = new ArrayList<>();
 
 
 
     static {
-        COMIDAS_POPULARES.add(new Eventos(0, "REGISTRO LABOR", R.drawable.labor));
-        COMIDAS_POPULARES.add(new Eventos(0, "REGISTRO EVENTO", R.drawable.inspeccion));
-        /*
-        COMIDAS_POPULARES.add(new Eventos(0, "Sushi Extremo", R.drawable.sushi));
-        COMIDAS_POPULARES.add(new Eventos(0, "Sandwich Deli", R.drawable.sandwich));
-        COMIDAS_POPULARES.add(new Eventos(0, "Lomo De Cerdo Austral", R.drawable.lomo_cerdo));*/
+        MENU_REGISTRO.add(new Eventos(0, "REGISTRO LABOR", R.drawable.labor));
+        MENU_REGISTRO.add(new Eventos(0, "REGISTRO EVENTO", R.drawable.inspeccion));
 
         EVENTOS.add(new Eventos(0, "Inspección diaria", R.drawable.inspeccion));
         EVENTOS.add(new Eventos(0, "Desplazamiento a sitio de la labor", R.drawable.desplazar));
@@ -41,8 +37,6 @@ public class Eventos {
         EVENTOS.add(new Eventos(0, "Varado", R.drawable.varado));
         EVENTOS.add(new Eventos(0, "Tanqueo", R.drawable.tanquear));
         EVENTOS.add(new Eventos(0, "Parado lluvia", R.drawable.lluvia));
-        EVENTOS.add(new Eventos(0, "Labor en Terreno", R.drawable.labor));
-
     }
 
     public float getPrecio() {

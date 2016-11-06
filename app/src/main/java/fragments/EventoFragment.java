@@ -314,7 +314,7 @@ public class EventoFragment extends Fragment implements OnClickListener {
                         btnSelecTipoEven.setText("EVENTO: "+evento);
                         uri = Uri.parse(SET_EVENTO +":"+ select.toString());
 
-                        if(select.equals("Labor en Terreno")){
+                        if(select.equals("FragmentoLabor en Terreno")){
                             btnHacienda.setVisibility(View.VISIBLE);
                             btnSuerte.setVisibility(View.VISIBLE);
                             btnHacienda.setEnabled(true);

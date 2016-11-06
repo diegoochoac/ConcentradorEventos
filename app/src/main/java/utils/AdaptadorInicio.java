@@ -1,7 +1,6 @@
 package utils;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ public class AdaptadorInicio extends RecyclerView.Adapter<AdaptadorInicio.ViewHo
 
     @Override
     public int getItemCount() {
-        return Eventos.COMIDAS_POPULARES.size();
+        return Eventos.MENU_REGISTRO.size();
     }
 
     @Override
@@ -61,7 +60,7 @@ public class AdaptadorInicio extends RecyclerView.Adapter<AdaptadorInicio.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Eventos item = Eventos.COMIDAS_POPULARES.get(i);          //TODO: CAmbiar por algo real
+        Eventos item = Eventos.MENU_REGISTRO.get(i);          //TODO: CAmbiar por algo real
 
         Glide.with(viewHolder.itemView.getContext())
                 .load(item.getIdDrawable())

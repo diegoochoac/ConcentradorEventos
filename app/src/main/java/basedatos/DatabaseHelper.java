@@ -208,7 +208,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             tipoeventoDao.create(nuevo);
             nuevo = new TipoEvento("Parado lluvia");
             tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("Labor en Terreno");
+            nuevo = new TipoEvento("FragmentoLabor en Terreno");
             tipoeventoDao.create(nuevo);
 
         }

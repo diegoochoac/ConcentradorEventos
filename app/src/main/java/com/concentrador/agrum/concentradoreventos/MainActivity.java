@@ -1,6 +1,7 @@
 package com.concentrador.agrum.concentradoreventos;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,14 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import basedatos.DatabaseCrud;
-import basedatos.contratista.Usuario;
-import fragments.EventoSeleccionado;
+import fragments.FragmentoLabor;
 import fragments.FragmentoCategorias;
 import fragments.FragmentoCuenta;
 import fragments.FragmentoInicio;
@@ -31,7 +27,15 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     //BASE DE DATOS
     private DatabaseCrud database;
 
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    private String contratista="ContratistaKey";
+    private String usuario="UsuarioKey";
+    private String maquina="MaquinaKey";
+    private String suerte="SuerteKey";
+    private String hacienda="HaciendaKey";
 
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
 
         database = new DatabaseCrud(getApplicationContext()); //TODO revisar por que al quitar el context deja de funcionar
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
 
         //<editor-fold desc="Ocultar toolbar naview">
 /*      requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -81,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 break;
             case R.id.item_cuenta:
                 fragmentoGenerico = new FragmentoCuenta();
+                Bundle args = new Bundle();
+                args.putString(usuario, sharedpreferences.getString(usuario,""));
+                args.putString(maquina, sharedpreferences.getString(maquina,""));
+                fragmentoGenerico.setArguments(args);
                 break;
             case R.id.item_categorias:
 
@@ -91,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
         if (fragmentoGenerico != null) {
             fragmentManager
-                    .beginTransaction()
+                    .beginTransaction().addToBackStack(null)
                     .replace(R.id.contenedor_principal, fragmentoGenerico)
                     .commit();
         }
@@ -128,44 +139,81 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     @Override
     public void onFragmentIteration(Bundle parameters) {
-        Bundle param = parameters;
-
-        int EventoSeleccionado = param.getInt("EventoSelec");
-        boolean regresar = param.getBoolean("Regresar");
 
         Fragment fragmentoGenerico= null;
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle args = new Bundle();
+        Bundle param = parameters;
 
-        if(EventoSeleccionado != -1){
-            fragmentoGenerico = new EventoSeleccionado();
-            args.putInt("Evento",EventoSeleccionado);
-            args.putString("Contratista", "");
-            args.putString("Trabajador", "");
-            args.putString("Trabajador", "");
-            args.putString("Maquina", "");
-            args.putString("Hacienda", "");
-            args.putString("Suerte", "");
-            fragmentoGenerico.setArguments(args);
+        //int EventoSeleccionado = param.getInt("Evento");
+        int RegistroSeleccionado = param.getInt("Registro");
+        boolean regresar = param.getBoolean("Regresar");
+
+
+        String User = param.getString("UsuarioSelec");
+        String Machine = param.getString("MaquinaSelec");
+
+        Log.i("main","VALORES"+User+""+Machine+""+RegistroSeleccionado+""+regresar);
+
+        //Guardar los valores en las preferencias del celular quedan en memoria.
+        if(User != null){
+            Log.i("main","ENTROGuardarUsuario");
+            editor.putString(usuario,param.getString("UsuarioSelec"));
+            editor.commit();
+        }
+        if(Machine != null){
+            Log.i("main","ENTROGuardarMaquina");
+            editor.putString(maquina,param.getString("MaquinaSelec"));
+            editor.commit();
         }
 
-        if(regresar==true){
+
+
+        if (RegistroSeleccionado ==0 ){
+            RegistroSeleccionado=-1;
+            Log.i("main","ENTRO LABOR"+RegistroSeleccionado);
+            fragmentoGenerico = new FragmentoLabor();
+            args.putString("Contratista",  sharedpreferences.getString(contratista,""));
+            args.putString("Trabajador", sharedpreferences.getString(usuario,""));
+            args.putString("Maquina",  sharedpreferences.getString(maquina,""));
+            args.putString("Hacienda",  sharedpreferences.getString(hacienda,""));
+            args.putString("Suerte",  sharedpreferences.getString(suerte,""));
+            fragmentoGenerico.setArguments(args);
+        }
+        else if (RegistroSeleccionado ==1 ){
+            RegistroSeleccionado=-1;
+            Log.i("main","ENTRO EVENTOS"+RegistroSeleccionado);
             fragmentoGenerico = new FragmentoCategorias();
         }
 
+        if(regresar==true){
+            fragmentoGenerico = new FragmentoInicio();
+        }
 
         if (fragmentoGenerico != null) {
             fragmentManager
-                    .beginTransaction()
+                    .beginTransaction().addToBackStack(null)
                     .replace(R.id.contenedor_principal, fragmentoGenerico)
                     .commit();
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        int numero = getFragmentManager().getBackStackEntryCount();
+
+        Log.i("MAIN","back"+numero);
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else{
+            super.onBackPressed();
+        }
+
     }
 
 
-
-
-    //<editor-fold desc="Ocultar">
+//<editor-fold desc="Ocultar">
  /*   @TargetApi(19)
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

@@ -81,6 +81,6 @@ public class TipoEvento implements Serializable {
         EVENTOS.add(new TipoEvento("Varado", R.drawable.varado));
         EVENTOS.add(new TipoEvento("Tanqueo", R.drawable.tanquear));
         EVENTOS.add(new TipoEvento("Parado lluvia", R.drawable.lluvia));
-        EVENTOS.add(new TipoEvento("Labor en Terreno", R.drawable.labor));
+        EVENTOS.add(new TipoEvento("FragmentoLabor en Terreno", R.drawable.labor));
     }
 }

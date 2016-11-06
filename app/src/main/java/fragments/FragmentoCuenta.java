@@ -4,13 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -33,13 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import basedatos.DatabaseCrud;
-import basedatos.contratista.Contratista;
 import basedatos.contratista.Maquina;
 import basedatos.contratista.Usuario;
-import basedatos.evento.TipoEvento;
-import basedatos.terreno.Hacienda;
-import basedatos.terreno.Suerte;
-import utils.ItemClickListener;
 import utils.OnFragmentInteractionListener;
 
 public class FragmentoCuenta extends Fragment {
@@ -67,8 +57,8 @@ public class FragmentoCuenta extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USUARIO = "UsuarioKey";
+    private static final String ARG_MAQUINA = "MaquinaKey";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -83,8 +73,8 @@ public class FragmentoCuenta extends Fragment {
     public static FragmentoCuenta newInstance(String param1, String param2) {
         FragmentoCuenta fragment = new FragmentoCuenta();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_USUARIO, param1);
+        args.putString(ARG_MAQUINA, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,8 +83,9 @@ public class FragmentoCuenta extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            usuario = getArguments().getString(ARG_USUARIO);
+            maquina = getArguments().getString(ARG_MAQUINA);
+            Log.i("Cuenta","llego :"+usuario+maquina);
         }
     }
 
@@ -109,6 +100,10 @@ public class FragmentoCuenta extends Fragment {
         thiscontext = container.getContext();
         txtUsuario = (TextView)view.findViewById(R.id.textUsuario);
         txtMaquina = (TextView)view.findViewById(R.id.textMaquina);
+
+        txtUsuario.setText("USUARIO: "+usuario);
+        txtMaquina.setText("MAQUINA: "+maquina);
+
 
         imagenUsuario  = (ImageView) view.findViewById(R.id.imageViewUsuario);
         //<editor-fold desc="setOnClickListener Usuario">
@@ -242,23 +237,23 @@ public class FragmentoCuenta extends Fragment {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 Object select= null;
-                Uri uri = Uri.parse("");
+                Bundle args = new Bundle();
                 select= adapter.getItem(position);
 
                 switch (lista){
                     case "Usuario":
                         usuario = select.toString();
                         txtUsuario.setText("USUARIO: "+usuario);
-                        //uri = Uri.parse(SET_EVENTO +":"+ select.toString());
-                        //mListener.onFragmentInteraction(uri);
+                        args.putString("UsuarioSelec",usuario);
+                        mCallback.onFragmentIteration(args);
                         break;
                     case "Maquina":
                         maquina = select.toString();
                         txtMaquina.setText("MAQUINA: "+maquina);
-
+                        args.putString("MaquinaSelec",maquina);
+                        mCallback.onFragmentIteration(args);
                         break;
                 }
-
                 alert.cancel();
             }
         });
