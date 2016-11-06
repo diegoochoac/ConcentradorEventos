@@ -46,7 +46,7 @@ public class AdaptadorCategorias extends RecyclerView.Adapter<AdaptadorCategoria
 
         @Override
         public void onClick(View view) {
-            Log.i("posision","posicion:");
+            //Log.i("posision","posicion:");
             if(clickListener != null){
                 clickListener.onClick(view, getAdapterPosition()); //OnItemClickListener mItemClickListener;
             }

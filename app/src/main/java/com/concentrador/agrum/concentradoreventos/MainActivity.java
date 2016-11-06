@@ -11,10 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import basedatos.DatabaseCrud;
+import basedatos.contratista.Usuario;
 import fragments.EventoSeleccionado;
 import fragments.FragmentoCategorias;
+import fragments.FragmentoCuenta;
 import fragments.FragmentoInicio;
 import utils.OnFragmentInteractionListener;
 
@@ -24,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     //BASE DE DATOS
     private DatabaseCrud database;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +77,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         switch (itemDrawer.getItemId()) {
             case R.id.item_inicio:
-                fragmentoGenerico = new FragmentoCategorias();
+                fragmentoGenerico = new FragmentoInicio();
                 break;
             case R.id.item_cuenta:
-                // Fragmento para la sección Cuenta
+                fragmentoGenerico = new FragmentoCuenta();
                 break;
             case R.id.item_categorias:
-                fragmentoGenerico = new FragmentoInicio();
+
                 break;
             case R.id.item_configuracion:
                 // Iniciar actividad de configuración

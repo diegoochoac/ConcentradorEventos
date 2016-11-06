@@ -26,8 +26,9 @@ public class Eventos {
 
 
     static {
-        /*COMIDAS_POPULARES.add(new Eventos(0, "Camarones Tismados", R.drawable.camarones));
-        COMIDAS_POPULARES.add(new Eventos(0, "Rosca Herbárea", R.drawable.rosca));
+        COMIDAS_POPULARES.add(new Eventos(0, "REGISTRO LABOR", R.drawable.labor));
+        COMIDAS_POPULARES.add(new Eventos(0, "REGISTRO EVENTO", R.drawable.inspeccion));
+        /*
         COMIDAS_POPULARES.add(new Eventos(0, "Sushi Extremo", R.drawable.sushi));
         COMIDAS_POPULARES.add(new Eventos(0, "Sandwich Deli", R.drawable.sandwich));
         COMIDAS_POPULARES.add(new Eventos(0, "Lomo De Cerdo Austral", R.drawable.lomo_cerdo));*/

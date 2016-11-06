@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fragments.FragmentoCuenta">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/imageViewUsuario"
+            android:layout_gravity="center_horizontal|top"
+            android:src="@drawable/person" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/accentColor"
+            android:orientation="vertical"
+            android:padding="@dimen/espacio_norma_1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Usuario"
+                android:id="@+id/textUsuario" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/imageViewMaquina"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/labor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/accentColor"
+            android:orientation="vertical"
+            android:padding="@dimen/espacio_norma_1" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Maquina"
+                android:id="@+id/textMaquina" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
