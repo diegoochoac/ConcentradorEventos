@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import basedatos.DatabaseCrud;
+import fragments.FragmentoConfiguracion;
 import fragments.FragmentoLabor;
 import fragments.FragmentoCategorias;
 import fragments.FragmentoCuenta;
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
                 break;
             case R.id.item_configuracion:
-                // Iniciar actividad de configuración
+                fragmentoGenerico = new FragmentoConfiguracion();
                 break;
         }
         if (fragmentoGenerico != null) {

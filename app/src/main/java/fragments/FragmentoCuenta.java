@@ -93,7 +93,7 @@ public class FragmentoCuenta extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_fragmento_cuenta, container, false);
+        View view = inflater.inflate(R.layout.fragment_cuenta, container, false);
 
         contratista = "Operadores Campo";   //TODO hay que tomar el contratista desde el main
         database = new DatabaseCrud(container.getContext());
