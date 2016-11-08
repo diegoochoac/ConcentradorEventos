@@ -2,6 +2,7 @@ package fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -11,10 +12,12 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +25,8 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -155,36 +160,28 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
 
         final String[] text = {""};
 
+
+        LayoutInflater li = LayoutInflater.from(thiscontext);
+        View promptsView = li.inflate(R.layout.dialogconfiguracion, null);
+
+
         final AlertDialog.Builder alertdialogbuilder = new AlertDialog.Builder(thiscontext);
+        alertdialogbuilder.setView(promptsView);
 
-        final LinearLayout layout= new LinearLayout(thiscontext);
-        final ListView listview = new ListView(thiscontext);
-        final TextView Message = new TextView(thiscontext);
-        final EditText editText = new EditText(thiscontext);
-        final Button buton = new Button(thiscontext);
-
-        Message.setText("Ingrese busqueda:");
-        Message.setGravity(Gravity.CENTER | Gravity.BOTTOM);
-        editText.setSingleLine();
-        editText.clearFocus();
-        buton.setText("AGREGAR");
-
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(listview);
-        layout.addView(Message);
-        layout.addView(editText);
-        layout.addView(buton);
-
-
-        alertdialogbuilder.setTitle("Por favor seleccione");
-        alertdialogbuilder.setView(layout);
+        final ListView listview = (ListView)promptsView.findViewById(R.id.listViewDialog);
+        final EditText editText = (EditText) promptsView.findViewById(R.id.editTextBusqueda);
+        final Button botonAgregar =(Button) promptsView.findViewById(R.id.btnAgregar);
+        final Button botonEliminar = (Button)promptsView.findViewById(R.id.btnEliminar);
+        final Button botonSeleccionar = (Button)promptsView.findViewById(R.id.btnSeleccionar);
+        final Button botonActualizar= (Button)promptsView.findViewById(R.id.btnActualizar);
 
         listview.setAdapter(adapter);
 
+        alertdialogbuilder.setTitle("Configuración");
         final AlertDialog alert = alertdialogbuilder.create();
 
-
-        buton.setOnClickListener(new OnClickListener() {
+        //<editor-fold desc="BOTON AGREGAR">
+        botonAgregar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i("PRESIONO","PRESIONO"+text[0]);
@@ -205,9 +202,10 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         btnMaquina.setEnabled(true);
                         break;
                     case "Maquina":
-                        nuevoMaquina = new Maquina(text[0],nuevoContra);
-                        btnMaquina.setText("MAQUINA: "+text[0]);
-                        btnTipoEven.setEnabled(true);
+                        maquina = text[0];
+                        nuevoMaquina = new Maquina(maquina,nuevoContra);
+                        database.crearMaquina(nuevoMaquina);
+                        btnMaquina.setText("MAQUINA: "+maquina);
                         break;
                     case "Evento":
                         break;
@@ -219,7 +217,112 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                 alert.cancel();
             }
         });
-        buton.setVisibility(View.INVISIBLE);
+        //botonAgregar.setVisibility(View.INVISIBLE);
+        //</editor-fold>
+
+        //<editor-fold desc="BOTON SELECCIONAR">
+        botonSeleccionar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("PRESIONO","PRESIONO"+text[0]);
+                switch (lista){
+                    case "Contratista":
+                        btnContratista.setText("CONTRATISTA: "+contratista);
+                        btnUsuario.setText("AGREGAR USUARIO");
+                        btnUsuario.setEnabled(true);
+                        btnMaquina.setText("AGREGAR MAQUINA");
+                        nuevoContra = database.obtenerContratista(contratista);
+                        break;
+                    case "Usuario":
+                        btnUsuario.setText("USUARIO: "+usuario);
+                        btnMaquina.setText("AGREGAR MAQUINA");
+                        btnMaquina.setEnabled(true);
+                        break;
+                    case "Maquina":
+                        btnMaquina.setText("MAQUINA: "+maquina);
+                        break;
+                    case "Evento":
+                        break;
+                    case "Hacienda":
+                        break;
+                    case "Suerte":
+                        break;
+                }
+                alert.cancel();
+            }
+        });
+        //botonAgregar.setVisibility(View.INVISIBLE);
+        //</editor-fold>
+
+        //<editor-fold desc="BOTON ELIMINAR">
+        botonEliminar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("PRESIONO","ELIMINAR"+text[0]);
+
+                switch (lista){
+                    case "Contratista":
+                        contratista = text[0];
+                        nuevoContra = database.obtenerContratista(contratista);
+                        database.eliminarContratista(nuevoContra);
+                        break;
+                    case "Usuario":
+                        usuario = text[0];
+                        nuevoUser = database.obtenerUsuario(usuario);
+                        database.eliminarUsuario(nuevoUser);
+                        break;
+                    case "Maquina":
+                        maquina = text[0];
+                        nuevoMaquina= database.obtenerMaquina(maquina);
+                        database.eliminarMaquina(nuevoMaquina);
+                        break;
+                    case "Evento":
+                        break;
+                    case "Hacienda":
+                        break;
+                    case "Suerte":
+                        break;
+                }
+                alert.cancel();
+            }
+        });
+        //botonAgregar.setVisibility(View.INVISIBLE);
+        //</editor-fold>
+
+        //<editor-fold desc="BOTON ACTUALIZAR">
+        botonActualizar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("PRESIONO","PRESIONO"+text[0]);
+
+                switch (lista){
+                    case "Contratista":
+                        contratista = text[0];
+                        nuevoContra = database.obtenerContratista(contratista);
+                        database.actualizarContratista(nuevoContra);
+                        break;
+                    case "Usuario":
+                        usuario = text[0];
+                        nuevoUser = database.obtenerUsuario(usuario);
+                        database.actualizarUsuario(nuevoUser);
+                        break;
+                    case "Maquina":
+                        maquina = text[0];
+                        nuevoMaquina= database.obtenerMaquina(maquina);
+                        database.actualizarMaquina(nuevoMaquina);
+                        break;
+                    case "Evento":
+                        break;
+                    case "Hacienda":
+                        break;
+                    case "Suerte":
+                        break;
+                }
+                alert.cancel();
+            }
+        });
+        //botonAgregar.setVisibility(View.INVISIBLE);
+        //</editor-fold>
 
         editText.addTextChangedListener(new TextWatcher(){
             public void afterTextChanged(Editable s){
@@ -229,7 +332,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
             }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 text[0] = editText.getText().toString().toLowerCase().trim();
-                buton.setVisibility(View.INVISIBLE);
+                //botonAgregar.setVisibility(View.INVISIBLE);
                 switch (lista){
                     case "Contratista":
                         ContratistaList = database.obtenerContratistaAutocompletar(Contratista.NOMBRE, text[0]);
@@ -243,7 +346,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             ContratistaListName.clear();
                             ContratistaListName.add("No se encuentra Busqueda");
-                            buton.setVisibility(View.VISIBLE);
+                            botonAgregar.setVisibility(View.VISIBLE);
                         }
                         break;
 
@@ -259,7 +362,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             UsuarioListName.clear();
                             UsuarioListName.add("No se encuentra Busqueda");
-                            buton.setVisibility(View.VISIBLE);
+                            botonAgregar.setVisibility(View.VISIBLE);
                         }
                         break;
 
@@ -275,7 +378,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             MaquinaListName.clear();
                             MaquinaListName.add("No se encuentra Busqueda");
-                            buton.setVisibility(View.VISIBLE);
+                            botonAgregar.setVisibility(View.VISIBLE);
                         }
                         break;
 
@@ -291,7 +394,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             tipoEventoListName.clear();
                             tipoEventoListName.add("No se encuentra Busqueda");
-                            buton.setVisibility(View.VISIBLE);
+                            botonAgregar.setVisibility(View.VISIBLE);
                         }
                         break;
 
@@ -309,7 +412,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             HaciendaListName.clear();
                             HaciendaListName.add("No se encuentra Busqueda");
-                            buton.setVisibility(View.VISIBLE);
+                            botonAgregar.setVisibility(View.VISIBLE);
                         }
                         break;
 
@@ -325,7 +428,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             SuerteListName.clear();
                             SuerteListName.add("No se encuentra Busqueda");
-                            buton.setVisibility(View.VISIBLE);
+                            botonAgregar.setVisibility(View.VISIBLE);
                         }
                         break;
                 }
@@ -344,23 +447,26 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                 switch (lista){
                     case "Contratista":
                         contratista = select.toString();
-                        btnContratista.setText("CONTRATISTA: "+contratista);
-                        btnUsuario.setEnabled(true);
-                        nuevoContra = database.obtenerContratista(contratista);
+                        editText.setText(contratista);
+                        //btnContratista.setText("CONTRATISTA: "+contratista);
+                        //btnUsuario.setEnabled(true);
+                        //nuevoContra = database.obtenerContratista(contratista);
                         //uri = Uri.parse(SET_EVENTO +":"+ select.toString());
                         //mListener.onFragmentInteraction(uri);
                         break;
                     case "Usuario":
                         usuario = select.toString();
-                        btnUsuario.setText("USUARIO: "+usuario);
-                        btnMaquina.setEnabled(true);
+                        editText.setText(usuario);
+                        //btnUsuario.setText("USUARIO: "+usuario);
+                        //btnMaquina.setEnabled(true);
                         //uri = Uri.parse(SET_EVENTO +":"+ select.toString());
                         //mListener.onFragmentInteraction(uri);
                         break;
                     case "Maquina":
                         maquina = select.toString();
-                        btnMaquina.setText("MAQUINA: "+maquina);
-                        btnTipoEven.setEnabled(true);
+                        editText.setText(maquina);
+                        //btnMaquina.setText("MAQUINA: "+maquina);
+                        //btnTipoEven.setEnabled(true);
                         break;
                     case "Evento":
                         evento = select.toString();
@@ -390,18 +496,10 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         break;
                 }
 
-                alert.cancel();
+                //alert.cancel();
             }
         });
         //</editor-fold>
-
-      /*  alertdialogbuilder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });*/
 
         alert.show();
     }
@@ -450,37 +548,40 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
             case R.id.btnAgregarContra:
                 Log.i("Fragmen Config", "onClick btnContratista");
                 ContratistaList = database.obtenerContratistas();
-                if(ContratistaList.size()>0 && ContratistaList != null){
-                    ContratistaListName.clear();
-                    for(int i=0; i<ContratistaList.size(); i++){
-                        ContratistaListName.add(ContratistaList.get(i).getNombre());
+                if(ContratistaList != null){
+                    if(ContratistaList.size()>0){
+                        ContratistaListName.clear();
+                        for(int i=0; i<ContratistaList.size(); i++){
+                            ContratistaListName.add(ContratistaList.get(i).getNombre());
+                        }
+                        adapterContratista = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,ContratistaListName);
+                        AlerDialogList(adapterContratista, "Contratista");
                     }
-                    adapterContratista = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,ContratistaListName);
-                    AlerDialogList(adapterContratista, "Contratista");
                 }else{
-                    Log.i("Fragmen Config", "onClick btnContratista Ninguno");
-                    Toast.makeText(thiscontext,"No se encuentran registros",Toast.LENGTH_SHORT).show();
+                    ContratistaListName.clear();
+                    ContratistaListName.add("No hay Contratistas");
+                    adapterContratista = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, ContratistaListName);
+                    AlerDialogList(adapterContratista, "Contratista");
                 }
+
                 break;
 
             case R.id.btnAgregarUsua:
                 Log.i("Fragmen Config", "onClick btnTrabajador");
                 Log.i("Fragmen Config",contratista);
                 UsuarioList = database.obtenerUsuariosporId(Usuario.KEY_CONTRATISTA,contratista);
-                if(UsuarioList != null) {       //TODO: MIRAR ESTO Y HACERLO EN LOS OTROS
+                if(UsuarioList != null) {
                     Log.i("EventosFragment", "Tamaño: " + UsuarioList.size());
-                    if (UsuarioList.size() > 0 && UsuarioList != null) {
+                    if (UsuarioList.size() > 0) {
                         UsuarioListName.clear();
                         for (int i = 0; i < UsuarioList.size(); i++) {
                             UsuarioListName.add(UsuarioList.get(i).getNombre());
                         }
                         adapterUsuario = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, UsuarioListName);
                         AlerDialogList(adapterUsuario, "Usuario");
-                    } else {
-                        Log.i("EventosFragment", "onClick btnTrabajador Ninguno");
-                        Toast.makeText(thiscontext, "No se encuentran registros", Toast.LENGTH_SHORT).show();
                     }
                 }else{
+                    UsuarioListName.clear();
                     UsuarioListName.add("No hay Usuarios");
                     adapterUsuario = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, UsuarioListName);
                     AlerDialogList(adapterUsuario, "Usuario");
@@ -492,18 +593,23 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                 Log.i("EventosFragment", "onClick btnMaquina");
                 Log.i("EventosFragment",maquina);
                 MaquinaList = database.obtenerMaquinasporId(Maquina.KEY_CONTRATISTA,contratista);
-                Log.i("EventosFragment","Tamaño: "+MaquinaList.size());
-                if(MaquinaList.size()>0 && MaquinaList != null){
-                    MaquinaListName.clear();
-                    for(int i=0; i<MaquinaList.size(); i++){
-                        MaquinaListName.add(MaquinaList.get(i).getNombre());
+                if(MaquinaList != null){
+                    Log.i("EventosFragment","Tamaño: "+MaquinaList.size());
+                    if(MaquinaList.size()>0){
+                        MaquinaListName.clear();
+                        for(int i=0; i<MaquinaList.size(); i++){
+                            MaquinaListName.add(MaquinaList.get(i).getNombre());
+                        }
+                        adapterMaquina = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,MaquinaListName);
+                        AlerDialogList(adapterMaquina, "Maquina");
                     }
-                    adapterMaquina = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,MaquinaListName);
-                    AlerDialogList(adapterMaquina, "Maquina");
                 }else{
-                    Log.i("EventosFragment", "onClick btnMaquina Ninguno");
-                    Toast.makeText(thiscontext,"No se encuentran registros",Toast.LENGTH_SHORT).show();
+                    MaquinaListName.clear();
+                    MaquinaListName.add("No hay Maquinas");
+                    adapterMaquina = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, MaquinaListName);
+                    AlerDialogList(adapterMaquina, "Maquina");
                 }
+
                 break;
 
             case R.id.btnAgregarEvento:
