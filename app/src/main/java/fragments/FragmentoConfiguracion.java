@@ -2,52 +2,38 @@ package fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.Scroller;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.concentrador.agrum.concentradoreventos.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import basedatos.DatabaseCrud;
 import basedatos.contratista.Contratista;
 import basedatos.contratista.Maquina;
 import basedatos.contratista.Usuario;
-import basedatos.evento.Evento;
 import basedatos.evento.TipoEvento;
 import basedatos.terreno.Hacienda;
 import basedatos.terreno.Suerte;
 import utils.OnFragmentInteractionListener;
 
 public class FragmentoConfiguracion extends Fragment implements OnClickListener {
-
 
     private Button btnContratista, btnUsuario, btnMaquina, btnHacienda, btnSuerte, btnTipoEven;
 
@@ -58,7 +44,6 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
     private ArrayAdapter<String> adapterContratista;
     private String contratista="";
     Contratista nuevoContra;
-
 
     private List<Usuario> UsuarioList;
     private List<String> UsuarioListName = new ArrayList<>();
@@ -97,6 +82,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
     private String mParam2;
 
     private OnFragmentInteractionListener mCallback = null;
+    Uri uri = Uri.parse("");
 
     public FragmentoConfiguracion() {
         // Required empty public constructor
@@ -142,7 +128,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
 
         btnHacienda = (Button)view.findViewById(R.id.btnAgregarHacienda);
         btnHacienda.setOnClickListener(this);
-        btnHacienda.setEnabled(false);
+        btnHacienda.setEnabled(true);
 
         btnSuerte = (Button)view.findViewById(R.id.btnAgregarSuerte);
         btnSuerte.setOnClickListener(this);
@@ -150,7 +136,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
 
         btnTipoEven= (Button)view.findViewById(R.id.btnAgregarEvento);
         btnTipoEven.setOnClickListener(this);
-        btnTipoEven.setEnabled(false);
+        btnTipoEven.setEnabled(true);
 
         return view;
     }
@@ -173,7 +159,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
         final Button botonAgregar =(Button) promptsView.findViewById(R.id.btnAgregar);
         final Button botonEliminar = (Button)promptsView.findViewById(R.id.btnEliminar);
         final Button botonSeleccionar = (Button)promptsView.findViewById(R.id.btnSeleccionar);
-        final Button botonActualizar= (Button)promptsView.findViewById(R.id.btnActualizar);
+        botonAgregar.setEnabled(false);
 
         listview.setAdapter(adapter);
 
@@ -289,41 +275,6 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
         //botonAgregar.setVisibility(View.INVISIBLE);
         //</editor-fold>
 
-        //<editor-fold desc="BOTON ACTUALIZAR">
-        botonActualizar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("PRESIONO","PRESIONO"+text[0]);
-
-                switch (lista){
-                    case "Contratista":
-                        contratista = text[0];
-                        nuevoContra = database.obtenerContratista(contratista);
-                        database.actualizarContratista(nuevoContra);
-                        break;
-                    case "Usuario":
-                        usuario = text[0];
-                        nuevoUser = database.obtenerUsuario(usuario);
-                        database.actualizarUsuario(nuevoUser);
-                        break;
-                    case "Maquina":
-                        maquina = text[0];
-                        nuevoMaquina= database.obtenerMaquina(maquina);
-                        database.actualizarMaquina(nuevoMaquina);
-                        break;
-                    case "Evento":
-                        break;
-                    case "Hacienda":
-                        break;
-                    case "Suerte":
-                        break;
-                }
-                alert.cancel();
-            }
-        });
-        //botonAgregar.setVisibility(View.INVISIBLE);
-        //</editor-fold>
-
         editText.addTextChangedListener(new TextWatcher(){
             public void afterTextChanged(Editable s){
             }
@@ -332,7 +283,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
             }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 text[0] = editText.getText().toString().toLowerCase().trim();
-                //botonAgregar.setVisibility(View.INVISIBLE);
+                botonAgregar.setEnabled(false);
                 switch (lista){
                     case "Contratista":
                         ContratistaList = database.obtenerContratistaAutocompletar(Contratista.NOMBRE, text[0]);
@@ -346,7 +297,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             ContratistaListName.clear();
                             ContratistaListName.add("No se encuentra Busqueda");
-                            botonAgregar.setVisibility(View.VISIBLE);
+                            botonAgregar.setEnabled(true);
                         }
                         break;
 
@@ -362,7 +313,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             UsuarioListName.clear();
                             UsuarioListName.add("No se encuentra Busqueda");
-                            botonAgregar.setVisibility(View.VISIBLE);
+                            botonAgregar.setEnabled(true);
                         }
                         break;
 
@@ -378,7 +329,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             MaquinaListName.clear();
                             MaquinaListName.add("No se encuentra Busqueda");
-                            botonAgregar.setVisibility(View.VISIBLE);
+                            botonAgregar.setEnabled(true);
                         }
                         break;
 
@@ -394,7 +345,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             tipoEventoListName.clear();
                             tipoEventoListName.add("No se encuentra Busqueda");
-                            botonAgregar.setVisibility(View.VISIBLE);
+                            botonAgregar.setEnabled(true);
                         }
                         break;
 
@@ -412,7 +363,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             HaciendaListName.clear();
                             HaciendaListName.add("No se encuentra Busqueda");
-                            botonAgregar.setVisibility(View.VISIBLE);
+                            botonAgregar.setEnabled(true);
                         }
                         break;
 
@@ -428,7 +379,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         }else{
                             SuerteListName.clear();
                             SuerteListName.add("No se encuentra Busqueda");
-                            botonAgregar.setVisibility(View.VISIBLE);
+                            botonAgregar.setEnabled(true);
                         }
                         break;
                 }
@@ -543,10 +494,8 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
     @Override
     public void onClick(View view) {
 
-
         switch (view.getId()) {
             case R.id.btnAgregarContra:
-                Log.i("Fragmen Config", "onClick btnContratista");
                 ContratistaList = database.obtenerContratistas();
                 if(ContratistaList != null){
                     if(ContratistaList.size()>0){
@@ -563,15 +512,11 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                     adapterContratista = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, ContratistaListName);
                     AlerDialogList(adapterContratista, "Contratista");
                 }
-
                 break;
 
             case R.id.btnAgregarUsua:
-                Log.i("Fragmen Config", "onClick btnTrabajador");
-                Log.i("Fragmen Config",contratista);
                 UsuarioList = database.obtenerUsuariosporId(Usuario.KEY_CONTRATISTA,contratista);
                 if(UsuarioList != null) {
-                    Log.i("EventosFragment", "Tamaño: " + UsuarioList.size());
                     if (UsuarioList.size() > 0) {
                         UsuarioListName.clear();
                         for (int i = 0; i < UsuarioList.size(); i++) {
@@ -586,15 +531,11 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                     adapterUsuario = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, UsuarioListName);
                     AlerDialogList(adapterUsuario, "Usuario");
                 }
-
                 break;
 
             case R.id.btnAgregarMaqui:
-                Log.i("EventosFragment", "onClick btnMaquina");
-                Log.i("EventosFragment",maquina);
                 MaquinaList = database.obtenerMaquinasporId(Maquina.KEY_CONTRATISTA,contratista);
                 if(MaquinaList != null){
-                    Log.i("EventosFragment","Tamaño: "+MaquinaList.size());
                     if(MaquinaList.size()>0){
                         MaquinaListName.clear();
                         for(int i=0; i<MaquinaList.size(); i++){
@@ -609,59 +550,68 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                     adapterMaquina = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, MaquinaListName);
                     AlerDialogList(adapterMaquina, "Maquina");
                 }
-
                 break;
 
             case R.id.btnAgregarEvento:
-                Log.i("EventosFragment", "onClick btnSeleEvento");
+                Log.i("Fragmen Config", "onClick btnSeleEvento");
                 tipoEventoList = database.obtenerTipoEvento();
-                if(tipoEventoList.size()>0 && tipoEventoList != null){
-                    tipoEventoListName.clear();
-                    for(int i=0; i<tipoEventoList.size(); i++){
-                        tipoEventoListName.add(tipoEventoList.get(i).getNombre());
+                if(tipoEventoList != null){
+                    if(tipoEventoList.size()>0 ){
+                        tipoEventoListName.clear();
+                        for(int i=0; i<tipoEventoList.size(); i++){
+                            tipoEventoListName.add(tipoEventoList.get(i).getNombre());
+                        }
+                        adapterTipoEvento = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,tipoEventoListName);
+                        AlerDialogList(adapterTipoEvento, "Evento");
                     }
-                    adapterTipoEvento = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,tipoEventoListName);
-                    AlerDialogList(adapterTipoEvento, "Evento");
                 }else{
-                    Log.i("EventosFragment", "onClick btnSeleEvento Ninguno");
-                    Toast.makeText(thiscontext,"No se encuentran registros",Toast.LENGTH_SHORT).show();
+                    tipoEventoListName.clear();
+                    tipoEventoListName.add("No hay Eventos");
+                    adapterTipoEvento = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, tipoEventoListName);
+                    AlerDialogList(adapterTipoEvento, "Evento");
                 }
                 break;
 
             case R.id.btnAgregarHacienda:
-                Log.i("EventosFragment", "onClick btnHacienda");
+                Log.i("Fragmen Config", "onClick btnHacienda");
                 HaciendaList = database.obtenerHaciendas();
-                if(HaciendaList.size()>0 && HaciendaList != null){
-                    HaciendaListName.clear();
-                    for(int i=0; i<HaciendaList.size(); i++){
-                        HaciendaListName.add(HaciendaList.get(i).getNombre());
+                if(HaciendaList != null){
+                    if(HaciendaList.size()>0 ){
+                        HaciendaListName.clear();
+                        for(int i=0; i<HaciendaList.size(); i++){
+                            HaciendaListName.add(HaciendaList.get(i).getNombre());
+                        }
+                        adapterHacienda = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,HaciendaListName);
+                        AlerDialogList(adapterHacienda, "Hacienda");
                     }
-                    adapterHacienda = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,HaciendaListName);
-                    AlerDialogList(adapterHacienda, "Hacienda");
                 }else{
-                    Log.i("EventosFragment", "onClick btnSeleEvento Ninguno");
-                    Toast.makeText(thiscontext,"No se encuentran registros",Toast.LENGTH_SHORT).show();
+                    HaciendaListName.clear();
+                    HaciendaListName.add("No hay Haciendas");
+                    adapterHacienda = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, HaciendaListName);
+                    AlerDialogList(adapterHacienda, "Hacienda");
                 }
-
                 break;
 
             case R.id.btnAgregarSuerte:
-                Log.i("EventosFragment", "onClick btnSuerte");
-                Log.i("EventosFragment",hacienda);
+                Log.i("Fragmen Config", "onClick btnSuerte");
+                Log.i("Fragmen Config",hacienda);
                 SuerteList = database.obtenerSuertesporId(Suerte.KEY_HACIENDA,hacienda);
-                Log.i("EventosFragment","Tamaño: "+SuerteList.size());
-                if(SuerteList.size()>0 && SuerteList != null){
-                    SuerteListName.clear();
-                    for(int i=0; i<SuerteList.size(); i++){
-                        SuerteListName.add(SuerteList.get(i).getNombre());
+                if(SuerteList != null){
+                    Log.i("EventosFragment","Tamaño: "+SuerteList.size());
+                    if(SuerteList.size()>0 ) {
+                        SuerteListName.clear();
+                        for (int i = 0; i < SuerteList.size(); i++) {
+                            SuerteListName.add(SuerteList.get(i).getNombre());
+                        }
+                        adapterSuerte = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, SuerteListName);
+                        AlerDialogList(adapterSuerte, "Suerte");
                     }
-                    adapterSuerte = new ArrayAdapter<String>(thiscontext,android.R.layout.simple_list_item_1,SuerteListName);
-                    AlerDialogList(adapterSuerte, "Suerte");
                 }else{
-                    Log.i("EventosFragment", "onClick btnSuerte Ninguno");
-                    Toast.makeText(thiscontext,"No se encuentran registros",Toast.LENGTH_SHORT).show();
+                    SuerteListName.clear();
+                    SuerteListName.add("No hay Suertes");
+                    adapterSuerte = new ArrayAdapter<String>(thiscontext, android.R.layout.simple_list_item_1, SuerteListName);
+                    AlerDialogList(adapterSuerte, "Suerte");
                 }
-
                 break;
         }
     }

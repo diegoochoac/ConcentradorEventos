@@ -1,6 +1,7 @@
 package fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,7 +37,11 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
 
     int indiceSeccion;
 
+    //Variables que se van hacia el MAIN
+    public final static String SET_EVENTO = "Evento";
+
     private OnFragmentInteractionListener mCallback = null;
+    Uri uri = Uri.parse("");
 
 
     public static FragmentoCategoria nuevaInstancia(int indiceSeccion) {
@@ -131,9 +136,8 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
         switch (indiceSeccion) {
             case 0:
                 Log.i("Fragmento Categoria","Evento posicion: "+position);
-                Bundle args = new Bundle();
-                args.putInt("EventoSelec",position);
-                mCallback.onFragmentIteration(args);
+                uri = Uri.parse(SET_EVENTO +":"+position);
+                mCallback.onFragmentIteration(uri);
                 break;
             case 1:
                 Log.i("Fragmento Categoria","Usuario posicion: "+position);

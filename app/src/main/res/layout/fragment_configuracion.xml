@@ -61,6 +61,13 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@android:color/black"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -100,6 +107,13 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@android:color/black"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -134,6 +148,14 @@
                     android:id="@+id/btnAgregarEvento" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@android:color/black"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -9,5 +9,5 @@ import android.os.Bundle;
 public interface OnFragmentInteractionListener {
 
     //public void onFragmentInteraction(Uri uri);
-    public void onFragmentIteration(Bundle parameters);
+    public void onFragmentIteration(Uri uri);
 }

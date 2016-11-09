@@ -1,11 +1,9 @@
 package fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,7 +25,12 @@ public class FragmentoInicio extends Fragment implements ItemClickListener {
     //private GridLayoutManager layoutManager;
     private AdaptadorInicio adaptador;
 
+    //Variables que se van hacia el MAIN
+    public final static String SET_REGISTRO = "Registro";
+
+
     private OnFragmentInteractionListener mCallback = null;
+    Uri uri = Uri.parse("");
 
 
     public FragmentoInicio() {
@@ -87,10 +90,8 @@ public class FragmentoInicio extends Fragment implements ItemClickListener {
 
     @Override
     public void onClick(View view, int position) {
-
         Log.i("Fragmento Inicio","Registro Posicion: "+position);
-        Bundle args = new Bundle();
-        args.putInt("Registro",position);
-        mCallback.onFragmentIteration(args);
+        uri = Uri.parse(SET_REGISTRO+":"+position);
+        mCallback.onFragmentIteration(uri);
     }
 }

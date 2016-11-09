@@ -2,6 +2,7 @@ package com.concentrador.agrum.concentradoreventos;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,11 +15,11 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import basedatos.DatabaseCrud;
-import fragments.FragmentoConfiguracion;
-import fragments.FragmentoLabor;
 import fragments.FragmentoCategorias;
+import fragments.FragmentoConfiguracion;
 import fragments.FragmentoCuenta;
 import fragments.FragmentoInicio;
+import fragments.FragmentoLabor;
 import utils.OnFragmentInteractionListener;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
@@ -139,57 +140,55 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     @Override
-    public void onFragmentIteration(Bundle parameters) {
+    public void onFragmentIteration(Uri uri) {
 
+        Log.i("MAIN ITERA","URI: "+uri.toString());
         Fragment fragmentoGenerico= null;
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle args = new Bundle();
-        Bundle param = parameters;
+
+        String[] spl = uri.toString().split(":");
+        switch (spl[0]){
+
+            case FragmentoInicio.SET_REGISTRO:
+
+                if (spl[1].equals("0") ){
+                    Log.i("main","ENTRO LABOR"+spl[1]);
+                    fragmentoGenerico = new FragmentoLabor();
+                    args.putString("Contratista",  sharedpreferences.getString(contratista,""));
+                    args.putString("Trabajador", sharedpreferences.getString(usuario,""));
+                    args.putString("Maquina",  sharedpreferences.getString(maquina,""));
+                    args.putString("Hacienda",  sharedpreferences.getString(hacienda,""));
+                    args.putString("Suerte",  sharedpreferences.getString(suerte,""));
+                    fragmentoGenerico.setArguments(args);
+                }
+                else if (spl[1].equals("1")){
+                    Log.i("main","ENTRO EVENTOS"+spl[1]);
+                    fragmentoGenerico = new FragmentoCategorias();
+                }
+
+                break;
+
+            case FragmentoCuenta.SET_USUARIO:
+                Log.i("main","ENTROGuardarUsuario"+ spl[1]);
+                editor.putString(usuario,spl[1]);
+                editor.commit();
+                break;
+
+            case FragmentoCuenta.SET_MAQUINA:
+                Log.i("main","ENTROGuardarMaquina"+ spl[1]);
+                editor.putString(maquina,spl[1]);
+                editor.commit();
+                break;
+
+
+        }
 
         //int EventoSeleccionado = param.getInt("Evento");
-        int RegistroSeleccionado = param.getInt("Registro");
-        boolean regresar = param.getBoolean("Regresar");
-
-
-        String User = param.getString("UsuarioSelec");
-        String Machine = param.getString("MaquinaSelec");
-
-        Log.i("main","VALORES"+User+""+Machine+""+RegistroSeleccionado+""+regresar);
-
-        //Guardar los valores en las preferencias del celular quedan en memoria.
-        if(User != null){
-            Log.i("main","ENTROGuardarUsuario");
-            editor.putString(usuario,param.getString("UsuarioSelec"));
-            editor.commit();
-        }
-        if(Machine != null){
-            Log.i("main","ENTROGuardarMaquina");
-            editor.putString(maquina,param.getString("MaquinaSelec"));
-            editor.commit();
-        }
-
-
-
-        if (RegistroSeleccionado ==0 ){
-            RegistroSeleccionado=-1;
-            Log.i("main","ENTRO LABOR"+RegistroSeleccionado);
-            fragmentoGenerico = new FragmentoLabor();
-            args.putString("Contratista",  sharedpreferences.getString(contratista,""));
-            args.putString("Trabajador", sharedpreferences.getString(usuario,""));
-            args.putString("Maquina",  sharedpreferences.getString(maquina,""));
-            args.putString("Hacienda",  sharedpreferences.getString(hacienda,""));
-            args.putString("Suerte",  sharedpreferences.getString(suerte,""));
-            fragmentoGenerico.setArguments(args);
-        }
-        else if (RegistroSeleccionado ==1 ){
-            RegistroSeleccionado=-1;
-            Log.i("main","ENTRO EVENTOS"+RegistroSeleccionado);
-            fragmentoGenerico = new FragmentoCategorias();
-        }
-
-        if(regresar==true){
-            fragmentoGenerico = new FragmentoInicio();
-        }
+        //boolean regresar = param.getBoolean("Regresar");
+        //if(regresar==true){
+        //    fragmentoGenerico = new FragmentoInicio();
+        //}
 
         if (fragmentoGenerico != null) {
             fragmentManager

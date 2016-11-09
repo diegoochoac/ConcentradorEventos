@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -54,6 +55,9 @@ public class FragmentoCuenta extends Fragment {
     private String maquina="";
 
 
+    //Variables que se van hacia el MAIN
+    public final static String SET_USUARIO = "Usuario";
+    public final static String SET_MAQUINA = "Maquina";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +69,7 @@ public class FragmentoCuenta extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mCallback = null;
+    Uri uri = Uri.parse("");
 
     public FragmentoCuenta() {
         // Required empty public constructor
@@ -245,13 +250,15 @@ public class FragmentoCuenta extends Fragment {
                         usuario = select.toString();
                         txtUsuario.setText("USUARIO: "+usuario);
                         args.putString("UsuarioSelec",usuario);
-                        mCallback.onFragmentIteration(args);
+                        uri = Uri.parse(SET_USUARIO +":"+ usuario);
+                        mCallback.onFragmentIteration(uri);
                         break;
                     case "Maquina":
                         maquina = select.toString();
                         txtMaquina.setText("MAQUINA: "+maquina);
                         args.putString("MaquinaSelec",maquina);
-                        mCallback.onFragmentIteration(args);
+                        uri = Uri.parse(SET_MAQUINA +":"+ maquina);
+                        mCallback.onFragmentIteration(uri);
                         break;
                 }
                 alert.cancel();
