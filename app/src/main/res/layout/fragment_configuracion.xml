@@ -44,19 +44,19 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Agregar Contratista"
+                    android:text="Contratista"
                     android:id="@+id/btnAgregarContra" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Agregar Usuario"
+                    android:text="Usuario"
                     android:id="@+id/btnAgregarUsua" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Agregar Maquina"
+                    android:text="Maquina"
                     android:id="@+id/btnAgregarMaqui" />
 
             </LinearLayout>
@@ -96,13 +96,13 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Agregar Hacienda"
+                    android:text="Hacienda"
                     android:id="@+id/btnAgregarHacienda" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Agregar Suerte"
+                    android:text="Suerte"
                     android:id="@+id/btnAgregarSuerte" />
 
             </LinearLayout>
@@ -144,7 +144,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Agregar Evento"
+                    android:text="Tipo Evento"
                     android:id="@+id/btnAgregarEvento" />
 
             </LinearLayout>

@@ -14,7 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.util.List;
+
 import basedatos.DatabaseCrud;
+import basedatos.contratista.Contratista;
+import fragments.FragmentoCategoria;
 import fragments.FragmentoCategorias;
 import fragments.FragmentoConfiguracion;
 import fragments.FragmentoCuenta;
@@ -36,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private String suerte="SuerteKey";
     private String hacienda="HaciendaKey";
 
+
+    private String eventoSelec ="";
+
+
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
 
@@ -54,11 +62,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             seleccionarItem(navigationView.getMenu().getItem(0));
         }
 
-        database = new DatabaseCrud(getApplicationContext()); //TODO revisar por que al quitar el context deja de funcionar
+        database = new DatabaseCrud(getApplicationContext());
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
 
+        List<Contratista> contratistalista = database.obtenerContratistas();
+        editor.putString(contratista,contratistalista.get(0).getNombre());
+        editor.commit();
+        Log.i("++++++++","CONTRATISTA DB:"+contratistalista.get(0).getNombre());
+        Log.i("++++++++","CONTRATISTA PREFE:"+sharedpreferences.getString(contratista,""));
         //<editor-fold desc="Ocultar toolbar naview">
 /*      requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -91,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             case R.id.item_cuenta:
                 fragmentoGenerico = new FragmentoCuenta();
                 Bundle args = new Bundle();
+                args.putString(contratista, sharedpreferences.getString(contratista,""));
                 args.putString(usuario, sharedpreferences.getString(usuario,""));
                 args.putString(maquina, sharedpreferences.getString(maquina,""));
                 fragmentoGenerico.setArguments(args);
@@ -170,22 +184,26 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 break;
 
             case FragmentoCuenta.SET_USUARIO:
-                Log.i("main","ENTROGuardarUsuario"+ spl[1]);
+                Log.i("main","ENTROGuardarUsuario "+ spl[1]);
                 editor.putString(usuario,spl[1]);
                 editor.commit();
                 break;
 
             case FragmentoCuenta.SET_MAQUINA:
-                Log.i("main","ENTROGuardarMaquina"+ spl[1]);
+                Log.i("main","ENTROGuardarMaquina "+ spl[1]);
                 editor.putString(maquina,spl[1]);
                 editor.commit();
+                break;
+
+            case FragmentoCategoria.SET_EVENTO:
+                Log.i("main","ENTRO EVENTO "+ spl[1]);
+                eventoSelec = spl[1];
+
                 break;
 
 
         }
 
-        //int EventoSeleccionado = param.getInt("Evento");
-        //boolean regresar = param.getBoolean("Regresar");
         //if(regresar==true){
         //    fragmentoGenerico = new FragmentoInicio();
         //}

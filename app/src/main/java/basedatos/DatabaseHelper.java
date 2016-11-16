@@ -208,8 +208,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             tipoeventoDao.create(nuevo);
             nuevo = new TipoEvento("Parado lluvia");
             tipoeventoDao.create(nuevo);
-            nuevo = new TipoEvento("FragmentoLabor en Terreno");
-            tipoeventoDao.create(nuevo);
 
         }
         catch (SQLException ex) {
@@ -230,16 +228,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
             Maquina nuevaMaq = new Maquina("deere f2000",nuevoCon);
             maquinaDao.create(nuevaMaq);
-
-            nuevoCon = new Contratista("Ingenio Manuelita");
-            contratistaDao.create(nuevoCon);
-            nuevoUsu = new Usuario("Pepito Perez",nuevoCon);
-            usuarioDao.create(nuevoUsu);
-
-            nuevoCon = new Contratista("Ingenio Incauca");
-            contratistaDao.create(nuevoCon);
-            nuevoUsu = new Usuario("Juan Solarte",nuevoCon);
-            usuarioDao.create(nuevoUsu);
 
         }
         catch (SQLException ex) {

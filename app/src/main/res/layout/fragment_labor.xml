@@ -25,7 +25,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:id="@+id/imageEvento"
-                    android:layout_weight="0.3" />
+                    android:layout_weight="0.3"
+                    android:scaleType="fitXY" />
             </LinearLayout>
 
             <LinearLayout
@@ -40,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="EVENTO"
+                    android:text="REGISTRO DE LABOR"
                     android:id="@+id/txEvento"
                     android:layout_gravity="left|center_horizontal"
                     android:layout_weight="1.01"
@@ -66,7 +67,7 @@
                     android:id="@+id/txContratista"
                     android:layout_gravity="left|center_horizontal"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="35dp"
                     android:layout_marginLeft="5dp" />
 
                 <TextView

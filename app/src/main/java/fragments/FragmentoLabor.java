@@ -25,7 +25,7 @@ public class FragmentoLabor extends Fragment {
     int eventoSelec = -1;
     String contratistaSelec="", trabajadorSelec="", maquinaSelec="", haciendaSelec ="", suerteSelec="";
 
-    TextView evento, contratista, trabajador, maquina, hacienda, suerte;
+    TextView contratista, trabajador, maquina, hacienda, suerte;
     ImageView imagen;
 
     FloatingActionButton FAB1;
@@ -66,7 +66,7 @@ public class FragmentoLabor extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_evento_seleccionado, container, false);
+        View view = inflater.inflate(R.layout.fragment_labor, container, false);
 
         imagen = (ImageView) view.findViewById(R.id.imageEvento);
 
@@ -100,9 +100,6 @@ public class FragmentoLabor extends Fragment {
                 break;
         }
 
-
-        evento = (TextView) view.findViewById(R.id.txEvento);
-        evento.setText(""+eventoSelec); //TODO Cambiar
         contratista = (TextView) view.findViewById(R.id.txContratista);
         contratista.setText("Contratista: "+contratistaSelec);
         trabajador = (TextView) view.findViewById(R.id.txTrabajador);
@@ -113,7 +110,6 @@ public class FragmentoLabor extends Fragment {
         hacienda.setText("Hacienda: "+haciendaSelec);
         suerte = (TextView) view.findViewById(R.id.txSuerte);
         suerte.setText("Suerte: "+suerteSelec);
-
 
         FAB1 = (FloatingActionButton) view.findViewById(R.id.fab1);
         FAB1.setOnClickListener(new View.OnClickListener() {

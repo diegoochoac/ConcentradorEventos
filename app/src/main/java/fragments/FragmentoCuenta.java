@@ -36,7 +36,7 @@ import utils.OnFragmentInteractionListener;
 public class FragmentoCuenta extends Fragment {
 
 
-    TextView txtUsuario, txtMaquina;
+    TextView txtContratista, txtUsuario, txtMaquina;
     ImageView imagenUsuario, imagenMaquina;
     Context thiscontext;
 
@@ -59,8 +59,8 @@ public class FragmentoCuenta extends Fragment {
     public final static String SET_USUARIO = "Usuario";
     public final static String SET_MAQUINA = "Maquina";
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_CONTRATISTA= "ContratistaKey";
     private static final String ARG_USUARIO = "UsuarioKey";
     private static final String ARG_MAQUINA = "MaquinaKey";
 
@@ -75,9 +75,10 @@ public class FragmentoCuenta extends Fragment {
         // Required empty public constructor
     }
 
-    public static FragmentoCuenta newInstance(String param1, String param2) {
+    public static FragmentoCuenta newInstance(String param0, String param1, String param2) {
         FragmentoCuenta fragment = new FragmentoCuenta();
         Bundle args = new Bundle();
+        args.putString(ARG_CONTRATISTA,param0);
         args.putString(ARG_USUARIO, param1);
         args.putString(ARG_MAQUINA, param2);
         fragment.setArguments(args);
@@ -88,9 +89,10 @@ public class FragmentoCuenta extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            contratista = getArguments().getString(ARG_CONTRATISTA);
             usuario = getArguments().getString(ARG_USUARIO);
             maquina = getArguments().getString(ARG_MAQUINA);
-            Log.i("Cuenta","llego :"+usuario+maquina);
+            Log.i("Cuenta","llego :"+contratista+usuario+maquina);
         }
     }
 
@@ -100,12 +102,14 @@ public class FragmentoCuenta extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cuenta, container, false);
 
-        contratista = "Operadores Campo";   //TODO hay que tomar el contratista desde el main
         database = new DatabaseCrud(container.getContext());
         thiscontext = container.getContext();
+
+        txtContratista = (TextView)view.findViewById(R.id.textContratista);
         txtUsuario = (TextView)view.findViewById(R.id.textUsuario);
         txtMaquina = (TextView)view.findViewById(R.id.textMaquina);
 
+        txtContratista.setText("CONTRATISTA: "+contratista);
         txtUsuario.setText("USUARIO: "+usuario);
         txtMaquina.setText("MAQUINA: "+maquina);
 

@@ -160,6 +160,7 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
         final Button botonEliminar = (Button)promptsView.findViewById(R.id.btnEliminar);
         final Button botonSeleccionar = (Button)promptsView.findViewById(R.id.btnSeleccionar);
         botonAgregar.setEnabled(false);
+        botonEliminar.setEnabled(false);
 
         listview.setAdapter(adapter);
 
@@ -194,10 +195,19 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         btnMaquina.setText("MAQUINA: "+maquina);
                         break;
                     case "Evento":
+                        evento = text[0];
+
+                        btnTipoEven.setText("TIPO EVENTO: "+evento);
                         break;
                     case "Hacienda":
+                        hacienda = text[0];
+
+                        btnHacienda.setText("HACIENDA: "+hacienda);
                         break;
                     case "Suerte":
+                        suerte = text[0];
+
+                        btnSuerte.setText("SUERTE: "+suerte);
                         break;
                 }
                 alert.cancel();
@@ -211,30 +221,38 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
             @Override
             public void onClick(View view) {
                 Log.i("PRESIONO","PRESIONO"+text[0]);
-                switch (lista){
-                    case "Contratista":
-                        btnContratista.setText("CONTRATISTA: "+contratista);
-                        btnUsuario.setText("AGREGAR USUARIO");
-                        btnUsuario.setEnabled(true);
-                        btnMaquina.setText("AGREGAR MAQUINA");
-                        nuevoContra = database.obtenerContratista(contratista);
-                        break;
-                    case "Usuario":
-                        btnUsuario.setText("USUARIO: "+usuario);
-                        btnMaquina.setText("AGREGAR MAQUINA");
-                        btnMaquina.setEnabled(true);
-                        break;
-                    case "Maquina":
-                        btnMaquina.setText("MAQUINA: "+maquina);
-                        break;
-                    case "Evento":
-                        break;
-                    case "Hacienda":
-                        break;
-                    case "Suerte":
-                        break;
+                if(text[0] !=""){
+                    switch (lista){
+                        case "Contratista":
+                            btnContratista.setText("CONTRATISTA: "+contratista);
+                            btnUsuario.setText("USUARIO");
+                            btnUsuario.setEnabled(true);
+                            btnMaquina.setText("MAQUINA");
+                            nuevoContra = database.obtenerContratista(contratista);
+                            break;
+                        case "Usuario":
+                            btnUsuario.setText("USUARIO: "+usuario);
+                            btnMaquina.setText("MAQUINA");
+                            btnMaquina.setEnabled(true);
+                            break;
+                        case "Maquina":
+                            btnMaquina.setText("MAQUINA: "+maquina);
+                            break;
+                        case "Evento":
+                            btnTipoEven.setText("EVENTO: "+evento);
+
+                            break;
+                        case "Hacienda":
+                            btnHacienda.setText("HACIENDA: "+hacienda);
+                            btnSuerte.setEnabled(true);
+                            break;
+                        case "Suerte":
+                            btnSuerte.setText("SUERTE: "+suerte);
+                            break;
+                    }
+                    alert.cancel();
                 }
-                alert.cancel();
+
             }
         });
         //botonAgregar.setVisibility(View.INVISIBLE);
@@ -263,10 +281,16 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                         database.eliminarMaquina(nuevoMaquina);
                         break;
                     case "Evento":
+                        evento = text[0];
+                        //database.eliminarTipoEvento();
                         break;
                     case "Hacienda":
+                        hacienda = text[0];
+                        //database.eliminarHacienda();
                         break;
                     case "Suerte":
+                        suerte = text[0];
+                        //database.eliminarSuerte();
                         break;
                 }
                 alert.cancel();
@@ -283,7 +307,6 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
             }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 text[0] = editText.getText().toString().toLowerCase().trim();
-                botonAgregar.setEnabled(false);
                 switch (lista){
                     case "Contratista":
                         ContratistaList = database.obtenerContratistaAutocompletar(Contratista.NOMBRE, text[0]);
@@ -298,6 +321,8 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                             ContratistaListName.clear();
                             ContratistaListName.add("No se encuentra Busqueda");
                             botonAgregar.setEnabled(true);
+                            botonEliminar.setEnabled(false);
+                            botonSeleccionar.setEnabled(false);
                         }
                         break;
 
@@ -314,6 +339,8 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                             UsuarioListName.clear();
                             UsuarioListName.add("No se encuentra Busqueda");
                             botonAgregar.setEnabled(true);
+                            botonEliminar.setEnabled(false);
+                            botonSeleccionar.setEnabled(false);
                         }
                         break;
 
@@ -330,6 +357,8 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                             MaquinaListName.clear();
                             MaquinaListName.add("No se encuentra Busqueda");
                             botonAgregar.setEnabled(true);
+                            botonEliminar.setEnabled(false);
+                            botonSeleccionar.setEnabled(false);
                         }
                         break;
 
@@ -346,6 +375,8 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                             tipoEventoListName.clear();
                             tipoEventoListName.add("No se encuentra Busqueda");
                             botonAgregar.setEnabled(true);
+                            botonEliminar.setEnabled(false);
+                            botonSeleccionar.setEnabled(false);
                         }
                         break;
 
@@ -364,6 +395,8 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                             HaciendaListName.clear();
                             HaciendaListName.add("No se encuentra Busqueda");
                             botonAgregar.setEnabled(true);
+                            botonEliminar.setEnabled(false);
+                            botonSeleccionar.setEnabled(false);
                         }
                         break;
 
@@ -380,6 +413,8 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                             SuerteListName.clear();
                             SuerteListName.add("No se encuentra Busqueda");
                             botonAgregar.setEnabled(true);
+                            botonEliminar.setEnabled(false);
+                            botonSeleccionar.setEnabled(false);
                         }
                         break;
                 }
@@ -395,63 +430,45 @@ public class FragmentoConfiguracion extends Fragment implements OnClickListener 
                 Uri uri = Uri.parse("");
                 select= adapter.getItem(position);
 
+                botonSeleccionar.setEnabled(true);
+                botonAgregar.setEnabled(false);
+                botonEliminar.setEnabled(true);
+
                 switch (lista){
                     case "Contratista":
                         contratista = select.toString();
                         editText.setText(contratista);
-                        //btnContratista.setText("CONTRATISTA: "+contratista);
-                        //btnUsuario.setEnabled(true);
-                        //nuevoContra = database.obtenerContratista(contratista);
-                        //uri = Uri.parse(SET_EVENTO +":"+ select.toString());
-                        //mListener.onFragmentInteraction(uri);
                         break;
+
                     case "Usuario":
                         usuario = select.toString();
                         editText.setText(usuario);
-                        //btnUsuario.setText("USUARIO: "+usuario);
-                        //btnMaquina.setEnabled(true);
-                        //uri = Uri.parse(SET_EVENTO +":"+ select.toString());
-                        //mListener.onFragmentInteraction(uri);
                         break;
+
                     case "Maquina":
                         maquina = select.toString();
                         editText.setText(maquina);
-                        //btnMaquina.setText("MAQUINA: "+maquina);
-                        //btnTipoEven.setEnabled(true);
                         break;
+
                     case "Evento":
                         evento = select.toString();
-                        btnTipoEven.setText("EVENTO: "+evento);
-                        //uri = Uri.parse(SET_EVENTO +":"+ select.toString());
-
-                        if(select.equals("FragmentoLabor en Terreno")){
-                            btnHacienda.setVisibility(View.VISIBLE);
-                            btnSuerte.setVisibility(View.VISIBLE);
-                            btnHacienda.setEnabled(true);
-                        }
-                        else {
-                            btnHacienda.setVisibility(View.INVISIBLE);
-                            btnSuerte.setVisibility(View.INVISIBLE);
-                        }
-
-                        //mListener.onFragmentInteraction(uri);
+                        editText.setText(evento);
                         break;
+
                     case "Hacienda":
                         hacienda = select.toString();
-                        btnHacienda.setText("HACIENDA: "+select.toString());
-                        btnSuerte.setEnabled(true);
+                        editText.setText(hacienda);
                         break;
+
                     case "Suerte":
                         suerte = select.toString();
-                        btnSuerte.setText("SUERTE: "+select.toString());
+                        editText.setText(suerte);
                         break;
                 }
-
                 //alert.cancel();
             }
         });
         //</editor-fold>
-
         alert.show();
     }
 

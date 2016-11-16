@@ -1,6 +1,8 @@
 package fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.concentrador.agrum.concentradoreventos.R;
 
@@ -21,6 +24,8 @@ import utils.Contratistas;
 import utils.Eventos;
 import utils.ItemClickListener;
 import utils.OnFragmentInteractionListener;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 /**
  * Fragmento que representa el contenido de cada pestaña dentro de la sección "Categorías"
@@ -35,7 +40,10 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
     private AdaptadorCategorias adaptador;
     private AdaptadorContratista adaptadorContratista;
 
+    private String evento = "";
+
     int indiceSeccion;
+    Context thiscontext;
 
     //Variables que se van hacia el MAIN
     public final static String SET_EVENTO = "Evento";
@@ -66,6 +74,7 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
 
         indiceSeccion = getArguments().getInt(INDICE_SECCION);
 
+        thiscontext = container.getContext();
         switch (indiceSeccion) {
             case 0:
                 layoutManager = new GridLayoutManager(getActivity(), 2);
@@ -78,12 +87,12 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
             case 1:
                 break;
             case 2:
-                layoutManager = new GridLayoutManager(getActivity(), 3);
-                reciclador.setLayoutManager(layoutManager);
-
-                adaptadorContratista = new AdaptadorContratista(Contratistas.CONTRATISTAS);//TODO cambiar
-                reciclador.setAdapter(adaptadorContratista);
-                adaptadorContratista.setClickListener(this);
+//                layoutManager = new GridLayoutManager(getActivity(), 3);
+//                reciclador.setLayoutManager(layoutManager);
+//
+//                adaptadorContratista = new AdaptadorContratista(Contratistas.CONTRATISTAS);//TODO cambiar
+//                reciclador.setAdapter(adaptadorContratista);
+//                adaptadorContratista.setClickListener(this);
                 break;
             case 3:
                 //adaptador = new AdaptadorCategorias(Eventos.POSTRES);
@@ -93,6 +102,58 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
         }
 
         return view;
+    }
+
+    void AlerDialogButton(){
+
+        final String[] text = {""};
+
+        LayoutInflater li = LayoutInflater.from(thiscontext);
+        View promptsView = li.inflate(R.layout.dialogevento, null);
+
+
+        final AlertDialog.Builder alertdialogbuilder = new AlertDialog.Builder(thiscontext);
+        alertdialogbuilder.setView(promptsView);
+        final TextView txtEvento = (TextView)promptsView.findViewById(R.id.txtEvento);
+        final Button botonIniciar =(Button) promptsView.findViewById(R.id.btnIniciar);
+        final Button botonDetener = (Button)promptsView.findViewById(R.id.btnDetener);
+        final Button botonSalir = (Button)promptsView.findViewById(R.id.btnSalir);
+
+        botonIniciar.setEnabled(true);
+        botonDetener.setEnabled(false);
+        botonSalir.setEnabled(true);
+
+        txtEvento.setText(evento);
+        //alertdialogbuilder.setTitle("Pulse");
+        final AlertDialog alert = alertdialogbuilder.create();
+
+        botonIniciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("PRESIONO","PRESIONO"+text[0]);
+                botonIniciar.setEnabled(false);
+                botonDetener.setEnabled(true);
+            }
+        });
+
+        botonDetener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("PRESIONO","PRESIONO"+text[0]);
+                botonIniciar.setEnabled(true);
+                botonDetener.setEnabled(false);
+            }
+        });
+
+        botonSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("PRESIONO","PRESIONO"+text[0]);
+                alert.cancel();
+            }
+        });
+
+        alert.show();
     }
 
     @Override
@@ -136,20 +197,12 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
         switch (indiceSeccion) {
             case 0:
                 Log.i("Fragmento Categoria","Evento posicion: "+position);
+                evento = Eventos.EVENTOS.get(position).getNombre().toString();
+
+                AlerDialogButton();
                 uri = Uri.parse(SET_EVENTO +":"+position);
                 mCallback.onFragmentIteration(uri);
                 break;
-            case 1:
-                Log.i("Fragmento Categoria","Usuario posicion: "+position);
-                break;
-            case 2:
-                Log.i("Fragmento Categoria","Maquina posicion: "+position);
-                break;
-            case 3:
-                Log.i("Fragmento Categoria","Lugar posicion: "+position);
-                break;
         }
-
-
     }
 }
