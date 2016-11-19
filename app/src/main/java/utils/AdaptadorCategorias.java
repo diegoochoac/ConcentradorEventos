@@ -1,7 +1,7 @@
 package utils;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +13,6 @@ import com.concentrador.agrum.concentradoreventos.R;
 
 import java.util.List;
 
-import basedatos.evento.TipoEvento;
-
 /**
  * Adaptador para comidas usadas en la sección "Categorías"
  */
@@ -23,16 +21,15 @@ public class AdaptadorCategorias extends RecyclerView.Adapter<AdaptadorCategoria
 
     private final List<Eventos> items;
 
-    static ItemClickListener clickListener;
+    private int rowLayout;
+    private Context mContext;
+    private ItemClickListener clickListener;
 
-
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Campos respectivos de un item
         public TextView nombre;
         public TextView precio;
         public ImageView imagen;
-
 
         public ViewHolder(View v) {
             super(v);
@@ -46,28 +43,22 @@ public class AdaptadorCategorias extends RecyclerView.Adapter<AdaptadorCategoria
 
         @Override
         public void onClick(View view) {
-            //Log.i("posision","posicion:");
-            if(clickListener != null){
-                clickListener.onClick(view, getAdapterPosition()); //OnItemClickListener mItemClickListener;
-            }
+            if (clickListener != null) clickListener.onClick(view, getAdapterPosition());
         }
     }
-
-
-    public void setClickListener(ItemClickListener itemClickListener){
-        this.clickListener = itemClickListener;
-    }
-
 
 
     public AdaptadorCategorias(List<Eventos> items) {
         this.items = items;
     }
 
-
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
     }
 
     @Override
@@ -86,7 +77,7 @@ public class AdaptadorCategorias extends RecyclerView.Adapter<AdaptadorCategoria
                 .centerCrop()
                 .into(viewHolder.imagen);
         viewHolder.nombre.setText(item.getNombre());
-        viewHolder.precio.setText("" + item.getPrecio());
+        viewHolder.precio.setText("$" + item.getPrecio());
 
     }
 

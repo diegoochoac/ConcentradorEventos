@@ -13,11 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Calendar;
 import java.util.List;
 
 import basedatos.DatabaseCrud;
 import basedatos.contratista.Contratista;
+import basedatos.evento.Evento;
+import basedatos.evento.TipoEvento;
 import fragments.FragmentoCategoria;
 import fragments.FragmentoCategorias;
 import fragments.FragmentoConfiguracion;
@@ -42,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
 
     private String eventoSelec ="";
+
+    private String tiempoInicio;
+    private String tiempoFin;
+    private String fecha;
 
 
     SharedPreferences sharedpreferences;
@@ -196,8 +212,22 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 break;
 
             case FragmentoCategoria.SET_EVENTO:
-                Log.i("main","ENTRO EVENTO "+ spl[1]);
+                Log.i("main","ENTRO EVENTO "+ spl[1]+" valor: "+spl[2]);
                 eventoSelec = spl[1];
+                if(spl[2].equals("iniciar")) {
+                    Log.i("main","ENTRO EVENTO INICIAR");
+                    tiempoInicio = java.text.DateFormat.getTimeInstance().format(Calendar.getInstance().getTime());
+                }else if(spl[2].equals("detener")){
+                    Log.i("main","ENTRO EVENTO DETENER");
+                    tiempoFin = java.text.DateFormat.getTimeInstance().format(Calendar.getInstance().getTime());
+                    fecha =java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
+                    TipoEvento tipoEventoSel = database.obtenerTipoEvento(eventoSelec);
+                    Evento nuevo = new Evento(tipoEventoSel,tiempoInicio,tiempoFin,fecha,"No");
+                    database.crearEvento(nuevo);
+
+                    syncServerEventos();
+                }
 
                 break;
 
@@ -228,6 +258,44 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             super.onBackPressed();
         }
 
+    }
+
+    public void syncServerEventos(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+        params.put("eventoJSON", database.composeJSONfromSQLiteEvento());
+        Log.i("Json Send",""+database.composeJSONfromSQLiteEvento());
+        client.post("http://medicionenergia.net23.net/agrum/insertevent.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    Log.i("EventoFragment","response: "+response);
+                    JSONArray arr = new JSONArray(response);
+                    for(int i=0; i<arr.length();i++){
+                        JSONObject obj = (JSONObject)arr.get(i);
+                        Log.i("Sincronizando BD Local"," Event id: "+obj.get("id").toString()+" status: "+obj.get("updateState").toString());
+                        database.updateSyncStatusEvento(obj.get("id").toString(),obj.get("updateState").toString());
+                    }
+                    Toast.makeText(getApplicationContext(), "DB Event Sync completed!", Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable error, String content) {
+                if(statusCode == 404){
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }else if(statusCode == 500){
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 

@@ -84,21 +84,6 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                 reciclador.setAdapter(adaptador);
                 adaptador.setClickListener(this);
                 break;
-            case 1:
-                break;
-            case 2:
-//                layoutManager = new GridLayoutManager(getActivity(), 3);
-//                reciclador.setLayoutManager(layoutManager);
-//
-//                adaptadorContratista = new AdaptadorContratista(Contratistas.CONTRATISTAS);//TODO cambiar
-//                reciclador.setAdapter(adaptadorContratista);
-//                adaptadorContratista.setClickListener(this);
-                break;
-            case 3:
-                //adaptador = new AdaptadorCategorias(Eventos.POSTRES);
-                //reciclador.setAdapter(adaptador);
-                //adaptador.setClickListener(this);
-                break;
         }
 
         return view;
@@ -133,6 +118,8 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                 Log.i("PRESIONO","PRESIONO"+text[0]);
                 botonIniciar.setEnabled(false);
                 botonDetener.setEnabled(true);
+                uri = Uri.parse(SET_EVENTO +":"+evento+":iniciar");
+                mCallback.onFragmentIteration(uri);
             }
         });
 
@@ -142,6 +129,9 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                 Log.i("PRESIONO","PRESIONO"+text[0]);
                 botonIniciar.setEnabled(true);
                 botonDetener.setEnabled(false);
+                uri = Uri.parse(SET_EVENTO +":"+evento+":detener");
+                mCallback.onFragmentIteration(uri);
+                alert.cancel();
             }
         });
 
@@ -149,6 +139,8 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
             @Override
             public void onClick(View view) {
                 Log.i("PRESIONO","PRESIONO"+text[0]);
+                uri = Uri.parse(SET_EVENTO +":"+evento+":salir");
+                mCallback.onFragmentIteration(uri);
                 alert.cancel();
             }
         });
@@ -200,8 +192,8 @@ public class FragmentoCategoria extends Fragment implements ItemClickListener {
                 evento = Eventos.EVENTOS.get(position).getNombre().toString();
 
                 AlerDialogButton();
-                uri = Uri.parse(SET_EVENTO +":"+position);
-                mCallback.onFragmentIteration(uri);
+                //uri = Uri.parse(SET_EVENTO +":"+evento);
+                //mCallback.onFragmentIteration(uri);
                 break;
         }
     }
