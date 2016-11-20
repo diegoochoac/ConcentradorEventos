@@ -253,14 +253,14 @@ public class FragmentoCuenta extends Fragment {
                     case "Usuario":
                         usuario = select.toString();
                         txtUsuario.setText("USUARIO: "+usuario);
-                        args.putString("UsuarioSelec",usuario);
+                        //args.putString("UsuarioSelec",usuario);
                         uri = Uri.parse(SET_USUARIO +":"+ usuario);
                         mCallback.onFragmentIteration(uri);
                         break;
                     case "Maquina":
                         maquina = select.toString();
                         txtMaquina.setText("MAQUINA: "+maquina);
-                        args.putString("MaquinaSelec",maquina);
+                        //args.putString("MaquinaSelec",maquina);
                         uri = Uri.parse(SET_MAQUINA +":"+ maquina);
                         mCallback.onFragmentIteration(uri);
                         break;

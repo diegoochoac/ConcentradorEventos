@@ -39,7 +39,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Contratista"
                     android:id="@+id/textView2"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="match_parent"
@@ -91,7 +92,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Hacienda"
                     android:id="@+id/textView4"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="match_parent"
@@ -139,7 +141,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Evento"
                     android:id="@+id/textView5"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="match_parent"

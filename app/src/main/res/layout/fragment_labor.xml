@@ -38,7 +38,7 @@
                 android:background="@color/accentColor">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="REGISTRO DE LABOR"
@@ -46,7 +46,8 @@
                     android:layout_gravity="left|center_horizontal"
                     android:layout_weight="1.01"
                     android:gravity="left|center"
-                    android:layout_marginLeft="5dp" />
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
 
@@ -67,7 +68,7 @@
                     android:id="@+id/txContratista"
                     android:layout_gravity="left|center_horizontal"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="5dp" />
 
                 <TextView
@@ -114,27 +115,16 @@
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab1"
+            android:id="@+id/fab2"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:src="@drawable/ic_regresar"
-            android:layout_gravity="bottom|end"
-            app:backgroundTint="#055FF0"
-            app:rippleColor="#FFF" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab2"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_margin="16dp"
-            android:clickable="true"
             android:src="@drawable/startblack"
-
-            android:layout_gravity="center|right"
+            android:layout_gravity="bottom|end"
             app:backgroundTint="#05FF50"
             app:rippleColor="#FFF"
+            app:fabSize="auto"
             android:baselineAlignBottom="false" />
 
 

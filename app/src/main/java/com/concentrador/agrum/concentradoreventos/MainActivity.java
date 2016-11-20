@@ -86,8 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         List<Contratista> contratistalista = database.obtenerContratistas();
         editor.putString(contratista,contratistalista.get(0).getNombre());
         editor.commit();
-        Log.i("++++++++","CONTRATISTA DB:"+contratistalista.get(0).getNombre());
-        Log.i("++++++++","CONTRATISTA PREFE:"+sharedpreferences.getString(contratista,""));
+
         //<editor-fold desc="Ocultar toolbar naview">
 /*      requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -123,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 args.putString(contratista, sharedpreferences.getString(contratista,""));
                 args.putString(usuario, sharedpreferences.getString(usuario,""));
                 args.putString(maquina, sharedpreferences.getString(maquina,""));
+                args.putString(hacienda, sharedpreferences.getString(hacienda,""));
+                args.putString(suerte, sharedpreferences.getString(suerte,""));
                 fragmentoGenerico.setArguments(args);
                 break;
             case R.id.item_categorias:
@@ -208,6 +209,18 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             case FragmentoCuenta.SET_MAQUINA:
                 Log.i("main","ENTROGuardarMaquina "+ spl[1]);
                 editor.putString(maquina,spl[1]);
+                editor.commit();
+                break;
+
+            case FragmentoLabor.SET_HACIENDA:
+                Log.i("main","ENTROGuardarHacienda "+ spl[1]);
+                editor.putString(hacienda,spl[1]);
+                editor.commit();
+                break;
+
+            case FragmentoLabor.SET_SUERTE:
+                Log.i("main","ENTROGuardarSuerte"+ spl[1]);
+                editor.putString(suerte,spl[1]);
                 editor.commit();
                 break;
 
